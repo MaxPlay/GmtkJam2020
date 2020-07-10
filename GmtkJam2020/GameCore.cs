@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GmtkJam2020.Gameplay;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +14,11 @@ namespace GmtkJam2020
 
         public SpriteBatch SpriteBatch { get; private set; }
 
+        public Texture2D Pixel { get; private set; }
 
+        RenderTarget2D renderTarget;
+
+        private Level level;
 
         public GameCore()
         {
@@ -22,7 +27,7 @@ namespace GmtkJam2020
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-        
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -30,7 +35,11 @@ namespace GmtkJam2020
 
         protected override void LoadContent()
         {
+            renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Pixel.SetData(new Color[] { Color.White });
+            level = Level.Create(20, 10, new Point(16, 16));
         }
 
         protected override void UnloadContent()
@@ -46,7 +55,17 @@ namespace GmtkJam2020
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(renderTarget);
+
             GraphicsDevice.Clear(Color.Black);
+            SpriteBatch.Begin();
+            level.Draw();
+            SpriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+            SpriteBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight), Color.White);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

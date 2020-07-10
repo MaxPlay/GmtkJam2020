@@ -42,6 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameCore.cs" />
+    <Compile Include="Gameplay\Level.cs" />
+    <Compile Include="Gameplay\LevelTile.cs" />
+    <Compile Include="Gameplay\TileType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
