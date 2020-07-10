@@ -39,7 +39,7 @@ namespace GmtkJam2020
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
-            level = Level.Create(20, 10, new Point(16, 16));
+            level = Level.LoadFromFile("Content/Levels/0.lvl");
         }
 
         protected override void UnloadContent()
