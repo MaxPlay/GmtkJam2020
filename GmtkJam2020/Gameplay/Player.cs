@@ -29,6 +29,16 @@ namespace GmtkJam2020.Gameplay
 
         public void TurnClockwise()
         {
+            if (CurrentAction == PlayerAction.Grab)
+            {
+                LevelTile grabTarget = Level.GetTile(GetPositionInFront());
+                if (Level.IsMovable(grabTarget.Type))
+                {
+                    if (!Level.TurnTile(GetPositionInFront(), GetPositionOnRight(), Position))
+                        return;
+                }
+            }
+
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -53,6 +63,16 @@ namespace GmtkJam2020.Gameplay
 
         public void TurnCounterClockwise()
         {
+            if (CurrentAction == PlayerAction.Grab)
+            {
+                LevelTile grabTarget = Level.GetTile(GetPositionInFront());
+                if (Level.IsMovable(grabTarget.Type))
+                {
+                    if (!Level.TurnTile(GetPositionInFront(), GetPositionOnLeft(), Position))
+                        return;
+                }
+            }
+
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -129,19 +149,69 @@ namespace GmtkJam2020.Gameplay
             return newPosition;
         }
 
+        private Point GetPositionOnLeft()
+        {
+            Point newPosition = Position;
+            switch (MoveDirection)
+            {
+                case Orientation.North:
+                    newPosition.X--;
+                    break;
+
+                case Orientation.West:
+                    newPosition.Y++;
+                    break;
+
+                case Orientation.South:
+                    newPosition.X++;
+                    break;
+
+                case Orientation.East:
+                    newPosition.Y--;
+                    break;
+            }
+
+            return newPosition;
+        }
+
+        private Point GetPositionOnRight()
+        {
+            Point newPosition = Position;
+            switch (MoveDirection)
+            {
+                case Orientation.North:
+                    newPosition.X++;
+                    break;
+
+                case Orientation.West:
+                    newPosition.Y--;
+                    break;
+
+                case Orientation.South:
+                    newPosition.X--;
+                    break;
+
+                case Orientation.East:
+                    newPosition.Y++;
+                    break;
+            }
+
+            return newPosition;
+        }
+
         private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
         {
             bool canMove = true;
             if (Level != null)
             {
                 LevelTile levelTile = Level.GetTile(newPosition);
-                if (levelTile.Type == TileType.Floor)
+                if (Level.IsWalkable(levelTile.Type))
                 {
                     if (!forward)
                     {
                         Point positionInFront = GetPositionInFront();
                         LevelTile frontTile = Level.GetTile(positionInFront);
-                        if (frontTile.Type == TileType.Moveable && (CurrentAction == PlayerAction.Pull || CurrentAction == PlayerAction.Grab))
+                        if (Level.IsMovable(frontTile.Type) && (CurrentAction == PlayerAction.Pull || CurrentAction == PlayerAction.Grab))
                             Level.PushTile(positionInFront, (Orientation)((int)(direction + 2) % 4));
                     }
                 }
@@ -149,7 +219,7 @@ namespace GmtkJam2020.Gameplay
                 {
                     if (forward)
                     {
-                        if (levelTile.Type == TileType.Moveable && (CurrentAction == PlayerAction.Push || CurrentAction == PlayerAction.Grab))
+                        if (Level.IsMovable(levelTile.Type) && (CurrentAction == PlayerAction.Push || CurrentAction == PlayerAction.Grab))
                         {
                             if (!Level.PushTile(newPosition, direction))
                                 canMove = false;

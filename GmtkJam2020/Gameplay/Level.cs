@@ -19,12 +19,21 @@ namespace GmtkJam2020.Gameplay
             ['.'] = TileType.Floor,
             ['x'] = TileType.Wall,
             ['p'] = TileType.Player,
-            ['m'] = TileType.Moveable,
+            ['m'] = TileType.Movable,
             ['d'] = TileType.Destructible,
+            ['t'] = TileType.Tower
         };
 
         private LevelTile[,] data;
         readonly Dictionary<TileType, Color> tileColors;
+
+        private List<TileType> movableTiles = new List<TileType>() { TileType.Movable };
+        private List<TileType> blockingTiles = new List<TileType>() { TileType.Wall, TileType.Tower, TileType.Destructible };
+        private List<TileType> walkableTiles = new List<TileType>() { TileType.Floor };
+
+        public bool IsMovable(TileType tile) => movableTiles.Contains(tile);
+        public bool IsBlocking(TileType tile) => blockingTiles.Contains(tile);
+        public bool IsWalkable(TileType tile) => walkableTiles.Contains(tile);
 
         private readonly static string[] floortiles = { "Floor0", "Floor1", "Floor2", "Floor3", "Floor4" };
 
@@ -40,6 +49,8 @@ namespace GmtkJam2020.Gameplay
 
         public Player Player { get; set; }
 
+        public Tower Tower { get; set; }
+
         private Level(int width, int height)
         {
             Width = width;
@@ -49,7 +60,7 @@ namespace GmtkJam2020.Gameplay
             {
                 [TileType.Floor] = Color.White,
                 [TileType.Wall] = Color.DarkGray,
-                [TileType.Moveable] = Color.Green,
+                [TileType.Movable] = Color.Green,
             };
             sprite = SpriteManager.Sprites["MarsTiles"].CreateInstance();
         }
@@ -67,6 +78,11 @@ namespace GmtkJam2020.Gameplay
                         if (Player == null)
                             Player = new Player(x, y) { Level = this };
                         data[x, y].Type = TileType.Floor;
+                    }
+                    else if (data[x, y].Type == TileType.Tower)
+                    {
+                        if (Tower == null)
+                            Tower = new Tower(x, y) { Level = this };
                     }
                 }
             }
@@ -100,12 +116,37 @@ namespace GmtkJam2020.Gameplay
                                 level.Player = new Player(x, y) { Level = level };
                             level.data[x, y].Type = TileType.Floor;
                         }
+                        else if (level.data[x, y].Type == TileType.Tower)
+                        {
+                            if (level.Tower == null)
+                                level.Tower = new Tower(x, y) { Level = level };
+                        }
                     }
                     else
                         level.data[x, y] = new LevelTile() { Type = TileType.Floor, Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
                 }
             }
             return level;
+        }
+
+        public bool TurnTile(Point start, Point end, Point pivot)
+        {
+            LevelTile startTile = GetTile(start);
+            if (!IsMovable(startTile.Type))
+                return false;
+
+            LevelTile endTile = GetTile(end);
+            if (!IsWalkable(endTile.Type))
+                return false;
+
+            Point p = start.X == pivot.X ? new Point(end.X, start.Y) : new Point(start.X, end.Y);
+            LevelTile centerTile = GetTile(p);
+            if (!IsWalkable(centerTile.Type))
+                return false;
+
+            data[start.X, start.Y].Type = TileType.Floor;
+            data[end.X, end.Y].Type = TileType.Movable;
+            return true;
         }
 
         public bool PushTile(Point position, Orientation direction)
@@ -133,10 +174,10 @@ namespace GmtkJam2020.Gameplay
                     break;
             }
 
-            if (GetTile(newPosition).Type == TileType.Floor)
+            if (IsWalkable(GetTile(newPosition).Type))
             {
                 data[position.X, position.Y].Type = TileType.Floor;
-                data[newPosition.X, newPosition.Y].Type = TileType.Moveable;
+                data[newPosition.X, newPosition.Y].Type = TileType.Movable;
 
                 return true;
             }
@@ -178,8 +219,8 @@ namespace GmtkJam2020.Gameplay
                             sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Wall");
                             break;
 
-                        case TileType.Moveable:
-                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Moveable");
+                        case TileType.Movable:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Movable");
                             break;
 
                         case TileType.Destructible:
@@ -190,6 +231,7 @@ namespace GmtkJam2020.Gameplay
             }
 
             Player?.Draw();
+            Tower?.Draw();
         }
     }
 }

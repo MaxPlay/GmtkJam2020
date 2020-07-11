@@ -5,7 +5,8 @@
         Floor,
         Wall,
         Player,
-        Moveable,
+        Movable,
         Destructible,
+        Tower,
     }
 }

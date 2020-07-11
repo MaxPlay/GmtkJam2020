@@ -81,16 +81,16 @@ namespace GmtkJam2020.Gameplay
             switch (direction)
             {
                 case Direction.Up:
-                    return axisValue.Y > deadZone && lastAxisValue.Y < deadZone;
+                    return axisValue.Y > deadZone && lastAxisValue.Y < deadZone && Math.Abs(axisValue.Y) > Math.Abs(axisValue.X);
 
                 case Direction.Left:
-                    return axisValue.X < -deadZone && lastAxisValue.X > -deadZone;
+                    return axisValue.X < -deadZone && lastAxisValue.X > -deadZone && Math.Abs(axisValue.X) > Math.Abs(axisValue.Y);
 
                 case Direction.Down:
-                    return axisValue.Y < -deadZone && lastAxisValue.Y > -deadZone;
+                    return axisValue.Y < -deadZone && lastAxisValue.Y > -deadZone && Math.Abs(axisValue.Y) > Math.Abs(axisValue.X);
 
                 case Direction.Right:
-                    return axisValue.X > deadZone && lastAxisValue.X < deadZone;
+                    return axisValue.X > deadZone && lastAxisValue.X < deadZone && Math.Abs(axisValue.X) > Math.Abs(axisValue.Y);
 
                 case Direction.Trigger:
                     return triggerValue > deadZone && lastTriggerValue < deadZone;

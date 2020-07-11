@@ -49,6 +49,7 @@
     <Compile Include="Gameplay\PlayerAction.cs" />
     <Compile Include="Gameplay\PlayerController.cs" />
     <Compile Include="Gameplay\TileType.cs" />
+    <Compile Include="Gameplay\Tower.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\Animation.cs" />
