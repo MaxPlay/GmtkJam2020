@@ -17,6 +17,20 @@ namespace GmtkJam2020.Gameplay
 
         public Player Player { get; set; }
 
+        readonly Dictionary<PlayerCommand, CommandDelegate> commands;
+
+        public PlayerController()
+        {
+            commands = new Dictionary<PlayerCommand, CommandDelegate>()
+            {
+                [PlayerCommand.MoveDown] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Down, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.S, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadDown, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Down, ref gamePadState, ref lastGamePadState, DeadZone),
+                [PlayerCommand.MoveUp] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Up, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.W, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadUp, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Up, ref gamePadState, ref lastGamePadState, DeadZone),
+                [PlayerCommand.MoveLeft] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Right, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.D, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadRight, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Right, ref gamePadState, ref lastGamePadState, DeadZone),
+                [PlayerCommand.MoveRight] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Left, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.A, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadLeft, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Left, ref gamePadState, ref lastGamePadState, DeadZone),
+                [PlayerCommand.Push] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D1) || gamePadState.IsButtonDown(Buttons.A),
+            };
+        }
+
         public void Update()
         {
             GamePadState lastGamePadState = gamePadState;
@@ -25,21 +39,26 @@ namespace GmtkJam2020.Gameplay
             gamePadState = GamePad.GetState(PlayerIndex.One);
             keyboardState = Keyboard.GetState();
 
-            if (IsKeyPressed(Keys.Up, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.W, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadUp, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Up, ref gamePadState, ref lastGamePadState))
+            if (commands[PlayerCommand.MoveUp](ref lastKeyboardState, ref lastGamePadState))
                 Player?.MoveForward();
-            else if (IsKeyPressed(Keys.Down, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.S, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadDown, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Down, ref gamePadState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveDown](ref lastKeyboardState, ref lastGamePadState))
                 Player?.MoveBackward();
-            else if (IsKeyPressed(Keys.Left, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.A, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadLeft, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Left, ref gamePadState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveLeft](ref lastKeyboardState, ref lastGamePadState))
                 Player?.TurnCounterClockwise();
-            else if (IsKeyPressed(Keys.Right, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.D, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadRight, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Right, ref gamePadState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveRight](ref lastKeyboardState, ref lastGamePadState))
                 Player?.TurnClockwise();
+
+            if (commands[PlayerCommand.Push](ref lastKeyboardState, ref lastGamePadState))
+                Player.CurrentAction = PlayerAction.Push;
+            else
+                Player.CurrentAction = PlayerAction.None;
         }
 
-        public bool IsKeyPressed(Keys key, ref KeyboardState keyboardState, ref KeyboardState lastKeyboardState) => lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key);
+        public static bool IsKeyPressed(Keys key, ref KeyboardState keyboardState, ref KeyboardState lastKeyboardState) => lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key);
 
-        public bool IsButtonPressed(Buttons button, ref GamePadState gamePadState, ref GamePadState lastGamePadState) => lastGamePadState.IsButtonUp(button) && gamePadState.IsButtonDown(button);
+        public static bool IsButtonPressed(Buttons button, ref GamePadState gamePadState, ref GamePadState lastGamePadState) => lastGamePadState.IsButtonUp(button) && gamePadState.IsButtonDown(button);
 
-        public bool IsDirection(Axis axis, Direction direction, ref GamePadState gamePadState, ref GamePadState lastGamePadState)
+        public static bool IsDirection(Axis axis, Direction direction, ref GamePadState gamePadState, ref GamePadState lastGamePadState, float deadZone)
         {
             if (!gamePadState.IsConnected)
                 return false;
@@ -52,19 +71,19 @@ namespace GmtkJam2020.Gameplay
             switch (direction)
             {
                 case Direction.Up:
-                    return axisValue.Y > DeadZone && lastAxisValue.Y < DeadZone;
+                    return axisValue.Y > deadZone && lastAxisValue.Y < deadZone;
 
                 case Direction.Left:
-                    return axisValue.X < -DeadZone && lastAxisValue.X > -DeadZone;
+                    return axisValue.X < -deadZone && lastAxisValue.X > -deadZone;
 
                 case Direction.Down:
-                    return axisValue.Y < -DeadZone && lastAxisValue.Y > -DeadZone;
+                    return axisValue.Y < -deadZone && lastAxisValue.Y > -deadZone;
 
                 case Direction.Right:
-                    return axisValue.X > DeadZone && lastAxisValue.X < DeadZone;
+                    return axisValue.X > deadZone && lastAxisValue.X < deadZone;
 
                 case Direction.Trigger:
-                    return triggerValue > DeadZone && lastTriggerValue < DeadZone;
+                    return triggerValue > deadZone && lastTriggerValue < deadZone;
             }
 
             return false;
@@ -84,5 +103,16 @@ namespace GmtkJam2020.Gameplay
             Left,
             Right
         }
+
+        private enum PlayerCommand
+        {
+            MoveUp,
+            MoveRight,
+            MoveDown,
+            MoveLeft,
+            Push
+        }
+
+        private delegate bool CommandDelegate(ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState);
     }
 }

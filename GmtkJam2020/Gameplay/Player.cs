@@ -11,14 +11,16 @@ namespace GmtkJam2020.Gameplay
     {
         public Player(int x, int y)
         {
-            Position = new Vector2(x, y);
+            Position = new Point(x, y);
         }
 
-        public Vector2 Position { get; set; }
+        public Point Position { get; set; }
 
         public Orientation MoveDirection { get; private set; }
 
         public Level Level { get; set; }
+
+        public PlayerAction CurrentAction { get; set; }
 
         public void TurnClockwise()
         {
@@ -66,7 +68,7 @@ namespace GmtkJam2020.Gameplay
 
         public void MoveForward()
         {
-            Vector2 newPosition = Position;
+            Point newPosition = Position;
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -86,16 +88,27 @@ namespace GmtkJam2020.Gameplay
                     break;
             }
 
-            MoveToPosition(newPosition);
+            MoveToPosition(newPosition, MoveDirection, true);
         }
 
-        private void MoveToPosition(Vector2 newPosition)
+        private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
         {
             if (Level != null)
             {
-                LevelTile levelTile = Level.GetTile(newPosition.ToPoint());
+                LevelTile levelTile = Level.GetTile(newPosition);
                 if (levelTile.Type != TileType.Floor)
-                    return;
+                {
+                    if (!forward)
+                        return;
+
+                    if (levelTile.Type == TileType.Pushable && CurrentAction == PlayerAction.Push)
+                    {
+                        if (!Level.PushTile(newPosition, direction))
+                            return;
+                    }
+                    else
+                        return;
+                }
             }
 
             Position = newPosition;
@@ -103,7 +116,7 @@ namespace GmtkJam2020.Gameplay
 
         public void MoveBackward()
         {
-            Vector2 newPosition = Position;
+            Point newPosition = Position;
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -123,20 +136,12 @@ namespace GmtkJam2020.Gameplay
                     break;
             }
 
-            MoveToPosition(newPosition);
+            MoveToPosition(newPosition, MoveDirection, false);
         }
 
         public void Draw()
         {
-            GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle((Position * new Vector2(Level.DEFAULT_TILE_WIDTH, Level.DEFAULT_TILE_HEIGHT)).ToPoint(), new Point(Level.DEFAULT_TILE_WIDTH, Level.DEFAULT_TILE_HEIGHT)), Color.Red);
+            GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT, Level.DEFAULT_TILE_WIDTH, Level.DEFAULT_TILE_HEIGHT), Color.Red);
         }
-    }
-
-    public enum Orientation
-    {
-        North,
-        West,
-        South,
-        East
     }
 }

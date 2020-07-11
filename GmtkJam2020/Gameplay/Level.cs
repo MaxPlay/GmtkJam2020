@@ -22,7 +22,7 @@ namespace GmtkJam2020.Gameplay
         };
 
         private LevelTile[,] data;
-        Dictionary<TileType, Color> tileColors;
+        readonly Dictionary<TileType, Color> tileColors;
 
         public int Width { get; }
 
@@ -100,6 +100,42 @@ namespace GmtkJam2020.Gameplay
                 }
             }
             return level;
+        }
+
+        public bool PushTile(Point position, Orientation direction)
+        {
+            if (!Bounds.Contains(position))
+                return false;
+
+            Point newPosition = position;
+            switch (direction)
+            {
+                case Orientation.North:
+                    newPosition.Y--;
+                    break;
+
+                case Orientation.West:
+                    newPosition.X--;
+                    break;
+
+                case Orientation.South:
+                    newPosition.Y++;
+                    break;
+
+                case Orientation.East:
+                    newPosition.X++;
+                    break;
+            }
+
+            if (GetTile(newPosition).Type == TileType.Floor)
+            {
+                data[position.X, position.Y].Type = TileType.Floor;
+                data[newPosition.X, newPosition.Y].Type = TileType.Pushable;
+
+                return true;
+            }
+
+            return false;
         }
 
         public LevelTile GetTile(Point point)
