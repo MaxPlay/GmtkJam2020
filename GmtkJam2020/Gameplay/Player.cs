@@ -50,7 +50,7 @@ namespace GmtkJam2020.Gameplay
 
             UpdateAnimation();
         }
-        
+
         public void TurnCounterClockwise()
         {
             switch (MoveDirection)
@@ -75,7 +75,9 @@ namespace GmtkJam2020.Gameplay
             UpdateAnimation();
         }
 
-        public void MoveForward()
+        public void MoveForward() => MoveToPosition(GetPositionInFront(), MoveDirection, true);
+
+        private Point GetPositionInFront()
         {
             Point newPosition = Position;
             switch (MoveDirection)
@@ -97,10 +99,12 @@ namespace GmtkJam2020.Gameplay
                     break;
             }
 
-            MoveToPosition(newPosition, MoveDirection, true);
+            return newPosition;
         }
 
-        public void MoveBackward()
+        public void MoveBackward() => MoveToPosition(GetPositionBehind(), MoveDirection, false);
+
+        private Point GetPositionBehind()
         {
             Point newPosition = Position;
             switch (MoveDirection)
@@ -122,30 +126,53 @@ namespace GmtkJam2020.Gameplay
                     break;
             }
 
-            MoveToPosition(newPosition, MoveDirection, false);
+            return newPosition;
         }
 
         private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
         {
+            bool canMove = true;
             if (Level != null)
             {
                 LevelTile levelTile = Level.GetTile(newPosition);
-                if (levelTile.Type != TileType.Floor)
+                if (levelTile.Type == TileType.Floor)
                 {
                     if (!forward)
-                        return;
-
-                    if (levelTile.Type == TileType.Pushable && CurrentAction == PlayerAction.Push)
                     {
-                        if (!Level.PushTile(newPosition, direction))
-                            return;
+                        Point positionInFront = GetPositionInFront();
+                        LevelTile frontTile = Level.GetTile(positionInFront);
+                        if (frontTile.Type == TileType.Moveable && (CurrentAction == PlayerAction.Pull || CurrentAction == PlayerAction.Grab))
+                            Level.PushTile(positionInFront, (Orientation)((int)(direction + 2) % 4));
+                    }
+                }
+                else
+                {
+                    if (forward)
+                    {
+                        if (levelTile.Type == TileType.Moveable && (CurrentAction == PlayerAction.Push || CurrentAction == PlayerAction.Grab))
+                        {
+                            if (!Level.PushTile(newPosition, direction))
+                                canMove = false;
+                        }
+                        else
+                            canMove = false;
                     }
                     else
-                        return;
+                    {
+                        canMove = false;
+                    }
                 }
             }
 
-            Position = newPosition;
+            if (canMove)
+                Position = newPosition;
+        }
+
+        public void Destroy()
+        {
+            Point targetPosition = GetPositionInFront();
+
+            Level.DestroyTile(targetPosition);
         }
 
         private void UpdateAnimation()

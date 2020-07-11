@@ -19,7 +19,8 @@ namespace GmtkJam2020.Gameplay
             ['.'] = TileType.Floor,
             ['x'] = TileType.Wall,
             ['p'] = TileType.Player,
-            ['3'] = TileType.Pushable,
+            ['m'] = TileType.Moveable,
+            ['d'] = TileType.Destructible,
         };
 
         private LevelTile[,] data;
@@ -48,7 +49,7 @@ namespace GmtkJam2020.Gameplay
             {
                 [TileType.Floor] = Color.White,
                 [TileType.Wall] = Color.DarkGray,
-                [TileType.Pushable] = Color.Green,
+                [TileType.Moveable] = Color.Green,
             };
             sprite = SpriteManager.Sprites["MarsTiles"].CreateInstance();
         }
@@ -135,7 +136,7 @@ namespace GmtkJam2020.Gameplay
             if (GetTile(newPosition).Type == TileType.Floor)
             {
                 data[position.X, position.Y].Type = TileType.Floor;
-                data[newPosition.X, newPosition.Y].Type = TileType.Pushable;
+                data[newPosition.X, newPosition.Y].Type = TileType.Moveable;
 
                 return true;
             }
@@ -157,6 +158,13 @@ namespace GmtkJam2020.Gameplay
             return new Level(width, height) { TileSize = tileSize };
         }
 
+        public void DestroyTile(Point targetPosition)
+        {
+            LevelTile tile = GetTile(targetPosition);
+            if (tile.Type == TileType.Destructible)
+                data[targetPosition.X, targetPosition.Y].Type = TileType.Floor;
+        }
+
         public void Draw()
         {
             for (int y = 0; y < Height; y++)
@@ -170,8 +178,12 @@ namespace GmtkJam2020.Gameplay
                             sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Wall");
                             break;
 
-                        case TileType.Pushable:
-                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Pushable");
+                        case TileType.Moveable:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Moveable");
+                            break;
+
+                        case TileType.Destructible:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "BreakableWall");
                             break;
                     }
                 }

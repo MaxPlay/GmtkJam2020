@@ -53,14 +53,15 @@ namespace GmtkJam2020.Gameplay
 
             if (commands[PlayerCommand.Push](ref lastKeyboardState, ref lastGamePadState))
                 Player.CurrentAction = PlayerAction.Push;
-            else if(commands[PlayerCommand.Pull](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.Pull](ref lastKeyboardState, ref lastGamePadState))
                 Player.CurrentAction = PlayerAction.Pull;
             else if (commands[PlayerCommand.Grab](ref lastKeyboardState, ref lastGamePadState))
                 Player.CurrentAction = PlayerAction.Grab;
-            else if (commands[PlayerCommand.Destroy](ref lastKeyboardState, ref lastGamePadState))
-                Player.CurrentAction = PlayerAction.Destroy;
             else
                 Player.CurrentAction = PlayerAction.None;
+
+            if (commands[PlayerCommand.Destroy](ref lastKeyboardState, ref lastGamePadState))
+                Player.Destroy();
         }
 
         public static bool IsKeyPressed(Keys key, ref KeyboardState keyboardState, ref KeyboardState lastKeyboardState) => lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key);
