@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GmtkJam2020.Rendering;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,10 @@ namespace GmtkJam2020.Gameplay
         private LevelTile[,] data;
         readonly Dictionary<TileType, Color> tileColors;
 
+        private readonly static string[] floortiles = { "Floor0", "Floor1", "Floor2", "Floor3", "Floor4" };
+
+        SpriteInstance sprite;
+
         public int Width { get; }
 
         public int Height { get; }
@@ -45,17 +50,17 @@ namespace GmtkJam2020.Gameplay
                 [TileType.Wall] = Color.DarkGray,
                 [TileType.Pushable] = Color.Green,
             };
+            sprite = SpriteManager.Sprites["MarsTiles"].CreateInstance();
         }
 
         public void RandomlyGenerate()
         {
-            Random random = new Random();
             Player = null;
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    data[x, y] = new LevelTile() { Type = (TileType)random.Next(0, 4) };
+                    data[x, y] = new LevelTile() { Type = (TileType)GameCore.Instance.Random.Next(0, 4), Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
                     if (data[x, y].Type == TileType.Player)
                     {
                         if (Player == null)
@@ -87,7 +92,7 @@ namespace GmtkJam2020.Gameplay
                     char value = char.ToLowerInvariant(lines[y + 2][x]);
                     if (parserMapping.ContainsKey(value))
                     {
-                        level.data[x, y] = new LevelTile() { Type = parserMapping[value] };
+                        level.data[x, y] = new LevelTile() { Type = parserMapping[value], Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
                         if (level.data[x, y].Type == TileType.Player)
                         {
                             if (level.Player == null)
@@ -96,7 +101,7 @@ namespace GmtkJam2020.Gameplay
                         }
                     }
                     else
-                        level.data[x, y] = new LevelTile() { Type = TileType.Floor };
+                        level.data[x, y] = new LevelTile() { Type = TileType.Floor, Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
                 }
             }
             return level;
@@ -158,7 +163,17 @@ namespace GmtkJam2020.Gameplay
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Vector2(x, y) * TileSize.ToVector2(), new Rectangle(new Point(), TileSize), tileColors[data[x, y].Type]);
+                    sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), floortiles[data[x, y].Frame]);
+                    switch (data[x, y].Type)
+                    {
+                        case TileType.Wall:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Wall");
+                            break;
+
+                        case TileType.Pushable:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "Pushable");
+                            break;
+                    }
                 }
             }
 
