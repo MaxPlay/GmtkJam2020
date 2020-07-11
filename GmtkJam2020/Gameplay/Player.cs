@@ -9,16 +9,16 @@ namespace GmtkJam2020.Gameplay
 {
     public class Player
     {
-        private Vector2 position;
-
         public Player(int x, int y)
         {
             Position = new Vector2(x, y);
         }
 
-        public Vector2 Position { get => position; set => position = value; }
+        public Vector2 Position { get; set; }
 
         public Orientation MoveDirection { get; private set; }
+
+        public Level Level { get; set; }
 
         public void TurnClockwise()
         {
@@ -66,46 +66,64 @@ namespace GmtkJam2020.Gameplay
 
         public void MoveForward()
         {
+            Vector2 newPosition = Position;
             switch (MoveDirection)
             {
                 case Orientation.North:
-                    position.Y--;
+                    newPosition.Y--;
                     break;
 
                 case Orientation.West:
-                    position.X--;
+                    newPosition.X--;
                     break;
 
                 case Orientation.South:
-                    position.Y++;
+                    newPosition.Y++;
                     break;
 
                 case Orientation.East:
-                    position.X++;
+                    newPosition.X++;
                     break;
             }
+
+            MoveToPosition(newPosition);
+        }
+
+        private void MoveToPosition(Vector2 newPosition)
+        {
+            if (Level != null)
+            {
+                LevelTile levelTile = Level.GetTile(newPosition.ToPoint());
+                if (levelTile.Type != TileType.Floor)
+                    return;
+            }
+
+            Position = newPosition;
         }
 
         public void MoveBackward()
         {
+            Vector2 newPosition = Position;
             switch (MoveDirection)
             {
                 case Orientation.North:
-                    position.Y++;
+                    newPosition.Y++;
                     break;
 
                 case Orientation.West:
-                    position.X++;
+                    newPosition.X++;
                     break;
 
                 case Orientation.South:
-                    position.Y--;
+                    newPosition.Y--;
                     break;
 
                 case Orientation.East:
-                    position.X--;
+                    newPosition.X--;
                     break;
             }
+
+            MoveToPosition(newPosition);
         }
 
         public void Draw()

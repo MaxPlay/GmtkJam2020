@@ -28,6 +28,8 @@ namespace GmtkJam2020.Gameplay
 
         public int Height { get; }
 
+        public Rectangle Bounds => new Rectangle(0, 0, Width, Height);
+
         public Point TileSize { get; private set; }
 
         public Player Player { get; set; }
@@ -57,7 +59,7 @@ namespace GmtkJam2020.Gameplay
                     if (data[x, y].Type == TileType.Player)
                     {
                         if (Player == null)
-                            Player = new Player(x, y);
+                            Player = new Player(x, y) { Level = this };
                         data[x, y].Type = TileType.Floor;
                     }
                 }
@@ -89,7 +91,7 @@ namespace GmtkJam2020.Gameplay
                         if (level.data[x, y].Type == TileType.Player)
                         {
                             if (level.Player == null)
-                                level.Player = new Player(x, y);
+                                level.Player = new Player(x, y) { Level = level };
                             level.data[x, y].Type = TileType.Floor;
                         }
                     }
@@ -98,6 +100,15 @@ namespace GmtkJam2020.Gameplay
                 }
             }
             return level;
+        }
+
+        public LevelTile GetTile(Point point)
+        {
+            if (Bounds.Contains(point))
+            {
+                return data[point.X, point.Y];
+            }
+            return LevelTile.OutOfBoundsTile;
         }
 
         public static Level Create(int width, int height, Point tileSize)
