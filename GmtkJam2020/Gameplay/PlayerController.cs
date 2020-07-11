@@ -28,6 +28,9 @@ namespace GmtkJam2020.Gameplay
                 [PlayerCommand.MoveLeft] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Right, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.D, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadRight, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Right, ref gamePadState, ref lastGamePadState, DeadZone),
                 [PlayerCommand.MoveRight] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Left, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.A, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadLeft, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Left, ref gamePadState, ref lastGamePadState, DeadZone),
                 [PlayerCommand.Push] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D1) || gamePadState.IsButtonDown(Buttons.A),
+                [PlayerCommand.Pull] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D2) || gamePadState.IsButtonDown(Buttons.B),
+                [PlayerCommand.Grab] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D3) || gamePadState.IsButtonDown(Buttons.X),
+                [PlayerCommand.Destroy] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D4) || gamePadState.IsButtonDown(Buttons.Y),
             };
         }
 
@@ -50,6 +53,12 @@ namespace GmtkJam2020.Gameplay
 
             if (commands[PlayerCommand.Push](ref lastKeyboardState, ref lastGamePadState))
                 Player.CurrentAction = PlayerAction.Push;
+            else if(commands[PlayerCommand.Pull](ref lastKeyboardState, ref lastGamePadState))
+                Player.CurrentAction = PlayerAction.Pull;
+            else if (commands[PlayerCommand.Grab](ref lastKeyboardState, ref lastGamePadState))
+                Player.CurrentAction = PlayerAction.Grab;
+            else if (commands[PlayerCommand.Destroy](ref lastKeyboardState, ref lastGamePadState))
+                Player.CurrentAction = PlayerAction.Destroy;
             else
                 Player.CurrentAction = PlayerAction.None;
         }
@@ -110,7 +119,10 @@ namespace GmtkJam2020.Gameplay
             MoveRight,
             MoveDown,
             MoveLeft,
-            Push
+            Push,
+            Pull,
+            Grab,
+            Destroy
         }
 
         private delegate bool CommandDelegate(ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState);

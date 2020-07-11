@@ -3,6 +3,9 @@
     public enum PlayerAction
     {
         None,
-        Push
+        Push,
+        Pull,
+        Grab,
+        Destroy
     }
 }
