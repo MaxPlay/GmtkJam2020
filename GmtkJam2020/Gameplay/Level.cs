@@ -11,13 +11,13 @@ namespace GmtkJam2020.Gameplay
 {
     public class Level
     {
-        const int DEFAULT_TILE_WIDTH = 16;
-        const int DEFAULT_TILE_HEIGHT = 16;
+        public const int DEFAULT_TILE_WIDTH = 16;
+        public const int DEFAULT_TILE_HEIGHT = 16;
         static Dictionary<char, TileType> parserMapping = new Dictionary<char, TileType>()
         {
-            ['0'] = TileType.Floor,
-            ['1'] = TileType.Wall,
-            ['2'] = TileType.Player,
+            ['.'] = TileType.Floor,
+            ['x'] = TileType.Wall,
+            ['p'] = TileType.Player,
             ['3'] = TileType.Pushable,
         };
 
@@ -25,29 +25,43 @@ namespace GmtkJam2020.Gameplay
         Dictionary<TileType, Color> tileColors;
 
         public int Width { get; }
+
         public int Height { get; }
+
         public Point TileSize { get; private set; }
+
+        public Player Player { get; set; }
 
         private Level(int width, int height)
         {
             Width = width;
             Height = height;
             data = new LevelTile[width, height];
-            Random random = new Random();
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    data[x, y] = new LevelTile() { Type = (TileType)random.Next(0, 4) };
-                }
-            }
             tileColors = new Dictionary<TileType, Color>()
             {
                 [TileType.Floor] = Color.White,
                 [TileType.Wall] = Color.DarkGray,
-                [TileType.Player] = Color.Red,
                 [TileType.Pushable] = Color.Green,
             };
+        }
+
+        public void RandomlyGenerate()
+        {
+            Random random = new Random();
+            Player = null;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    data[x, y] = new LevelTile() { Type = (TileType)random.Next(0, 4) };
+                    if (data[x, y].Type == TileType.Player)
+                    {
+                        if (Player == null)
+                            Player = new Player(x, y);
+                        data[x, y].Type = TileType.Floor;
+                    }
+                }
+            }
         }
 
         public static Level LoadFromFile(string filename)
@@ -63,13 +77,24 @@ namespace GmtkJam2020.Gameplay
             int.TryParse(lines[1], out int height);
 
             Level level = Create(width, height, new Point(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
+            level.Player = null;
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    char value = lines[y+2][x];
+                    char value = char.ToLowerInvariant(lines[y + 2][x]);
                     if (parserMapping.ContainsKey(value))
+                    {
                         level.data[x, y] = new LevelTile() { Type = parserMapping[value] };
+                        if (level.data[x, y].Type == TileType.Player)
+                        {
+                            if (level.Player == null)
+                                level.Player = new Player(x, y);
+                            level.data[x, y].Type = TileType.Floor;
+                        }
+                    }
+                    else
+                        level.data[x, y] = new LevelTile() { Type = TileType.Floor };
                 }
             }
             return level;
@@ -86,9 +111,11 @@ namespace GmtkJam2020.Gameplay
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Vector2(x, y) * TileSize.ToVector2(), new Rectangle(new Point(x, y), TileSize), tileColors[data[x, y].Type]);
+                    GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Vector2(x, y) * TileSize.ToVector2(), new Rectangle(new Point(), TileSize), tileColors[data[x, y].Type]);
                 }
             }
+
+            Player?.Draw();
         }
     }
 }

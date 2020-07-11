@@ -20,6 +20,8 @@ namespace GmtkJam2020
 
         private Level level;
 
+        private PlayerController Controller;
+
         public GameCore()
         {
             Instance = this;
@@ -40,6 +42,7 @@ namespace GmtkJam2020
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
             level = Level.LoadFromFile("Content/Levels/0.lvl");
+            Controller = new PlayerController() { Player = level.Player, DeadZone = 0.3f };
         }
 
         protected override void UnloadContent()
@@ -49,7 +52,7 @@ namespace GmtkJam2020
 
         protected override void Update(GameTime gameTime)
         {
-
+            Controller.Update();
             base.Update(gameTime);
         }
 
