@@ -43,9 +43,9 @@ namespace GmtkJam2020.Gameplay
                 Player?.MoveForward();
             else if (commands[PlayerCommand.MoveDown](ref lastKeyboardState, ref lastGamePadState))
                 Player?.MoveBackward();
-            else if (commands[PlayerCommand.MoveLeft](ref lastKeyboardState, ref lastGamePadState))
-                Player?.TurnCounterClockwise();
             else if (commands[PlayerCommand.MoveRight](ref lastKeyboardState, ref lastGamePadState))
+                Player?.TurnCounterClockwise();
+            else if (commands[PlayerCommand.MoveLeft](ref lastKeyboardState, ref lastGamePadState))
                 Player?.TurnClockwise();
 
             if (commands[PlayerCommand.Push](ref lastKeyboardState, ref lastGamePadState))

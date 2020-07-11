@@ -1,0 +1,84 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 0
+    },
+    "FrameSize": {
+      "X": 16,
+      "Y": 16
+    }
+  },
+  "Animations": [
+    {
+      "Name": "VerticalDoor_Idle_Open",
+      "Frames": [ 10 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "VerticalDoor_Idle_Closed",
+      "Frames": [ 11 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "VerticalDoor_Open",
+      "Frames": [ 11, 12, 10 ],
+      "Effect": "None",
+      "Loops": false
+    },
+    {
+      "Name": "HorizontalDoor_Idle_Open",
+      "Frames": [ 13 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "HorizontalDoor_Idle_Closed",
+      "Frames": [ 14 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "HorizontalDoor_Open",
+      "Frames": [ 13, 14, 15 ],
+      "Effect": "None",
+      "Loops": false
+    }
+  ],
+  "Frames": [
+    {
+      "Name": "Floor0",
+      "Frame": 1
+    },
+    {
+      "Name": "Floor1",
+      "Frame": 2
+    },
+    {
+      "Name": "Floor2",
+      "Frame": 3
+    },
+    {
+      "Name": "Floor3",
+      "Frame": 4
+    },
+    {
+      "Name": "Floor4",
+      "Frame": 5
+    },
+    {
+      "Name": "Wall",
+      "Frame": 6
+    },
+    {
+      "Name": "BreakableWall",
+      "Frame": 7
+    },
+    {
+      "Name": "Pushable",
+      "Frame": 16
+    }
+  ]
+}

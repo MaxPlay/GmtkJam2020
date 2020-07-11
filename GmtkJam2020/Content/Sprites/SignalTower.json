@@ -1,0 +1,20 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 16
+    },
+    "FrameSize": {
+      "X": 16,
+      "Y": 32
+    }
+  },
+  "Animations": [
+    {
+      "Name": "Idle",
+      "Frames": [ 0, 1, 2, 3 ],
+      "Effects": "None",
+      "Loops": true
+    }
+  ]
+}

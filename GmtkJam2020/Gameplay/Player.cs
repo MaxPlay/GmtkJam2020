@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GmtkJam2020.Rendering;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace GmtkJam2020.Gameplay
         public Player(int x, int y)
         {
             Position = new Point(x, y);
+            sprite = SpriteManager.Sprites["Robot"].CreateInstance();
+            sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Up"]);
         }
 
         public Point Position { get; set; }
@@ -21,6 +24,8 @@ namespace GmtkJam2020.Gameplay
         public Level Level { get; set; }
 
         public PlayerAction CurrentAction { get; set; }
+
+        SpriteInstance sprite;
 
         public void TurnClockwise()
         {
@@ -42,8 +47,10 @@ namespace GmtkJam2020.Gameplay
                     MoveDirection = Orientation.South;
                     break;
             }
-        }
 
+            UpdateAnimation();
+        }
+        
         public void TurnCounterClockwise()
         {
             switch (MoveDirection)
@@ -64,6 +71,8 @@ namespace GmtkJam2020.Gameplay
                     MoveDirection = Orientation.North;
                     break;
             }
+
+            UpdateAnimation();
         }
 
         public void MoveForward()
@@ -91,29 +100,6 @@ namespace GmtkJam2020.Gameplay
             MoveToPosition(newPosition, MoveDirection, true);
         }
 
-        private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
-        {
-            if (Level != null)
-            {
-                LevelTile levelTile = Level.GetTile(newPosition);
-                if (levelTile.Type != TileType.Floor)
-                {
-                    if (!forward)
-                        return;
-
-                    if (levelTile.Type == TileType.Pushable && CurrentAction == PlayerAction.Push)
-                    {
-                        if (!Level.PushTile(newPosition, direction))
-                            return;
-                    }
-                    else
-                        return;
-                }
-            }
-
-            Position = newPosition;
-        }
-
         public void MoveBackward()
         {
             Point newPosition = Position;
@@ -139,9 +125,54 @@ namespace GmtkJam2020.Gameplay
             MoveToPosition(newPosition, MoveDirection, false);
         }
 
+        private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
+        {
+            if (Level != null)
+            {
+                LevelTile levelTile = Level.GetTile(newPosition);
+                if (levelTile.Type != TileType.Floor)
+                {
+                    if (!forward)
+                        return;
+
+                    if (levelTile.Type == TileType.Pushable && CurrentAction == PlayerAction.Push)
+                    {
+                        if (!Level.PushTile(newPosition, direction))
+                            return;
+                    }
+                    else
+                        return;
+                }
+            }
+
+            Position = newPosition;
+        }
+
+        private void UpdateAnimation()
+        {
+            switch (MoveDirection)
+            {
+                case Orientation.North:
+                    sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Up"]);
+                    break;
+
+                case Orientation.West:
+                    sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Left"]);
+                    break;
+
+                case Orientation.South:
+                    sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Down"]);
+                    break;
+
+                case Orientation.East:
+                    sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Right"]);
+                    break;
+            }
+        }
+
         public void Draw()
         {
-            GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT, Level.DEFAULT_TILE_WIDTH, Level.DEFAULT_TILE_HEIGHT), Color.Red);
+            sprite.DrawAnimation(new Vector2(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT));
         }
     }
 }

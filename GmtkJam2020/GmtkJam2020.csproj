@@ -51,19 +51,43 @@
     <Compile Include="Gameplay\TileType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\Animation.cs" />
+    <Compile Include="Rendering\Animator.cs" />
+    <Compile Include="Rendering\Image.cs" />
+    <Compile Include="Rendering\NamedFrame.cs" />
+    <Compile Include="Rendering\Sprite.cs" />
+    <Compile Include="Rendering\SpriteInstance.cs" />
+    <Compile Include="Rendering\SpriteManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Levels\0.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Sprites\MarsTiles.png" />
+    <Content Include="Content\Sprites\Robot.png" />
+    <Content Include="Content\Sprites\SignalTower.png" />
     <Content Include="Icon.ico" />
+    <None Include="Content\Sprites\Robot.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\SignalTower.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\MarsTiles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

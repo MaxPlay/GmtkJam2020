@@ -4,6 +4,8 @@
     {
         public TileType Type;
 
+        public int Frame;
+
         public static LevelTile OutOfBoundsTile => new LevelTile() { Type = TileType.Wall };
     }
 }

@@ -1,0 +1,39 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 16,
+      "Y": 16
+    },
+    "FrameSize": {
+      "X": 48,
+      "Y": 48
+    }
+  },
+  "Animations": [
+    {
+      "Name": "Idle_Down",
+      "Frames": [ 0 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "Idle_Up",
+      "Frames": [ 14 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "Idle_Left",
+      "Frames": [ 7 ],
+      "Effect": "None",
+      "Loops": true
+    },
+    {
+      "Name": "Idle_Right",
+      "Frames": [ 7 ],
+      "Effect": "FlipHorizontally",
+      "Loops": true
+    }
+  ],
+  "Frames": [ ]
+}

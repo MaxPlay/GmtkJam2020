@@ -1,8 +1,10 @@
 ﻿using GmtkJam2020.Gameplay;
+using GmtkJam2020.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace GmtkJam2020
 {
@@ -16,6 +18,8 @@ namespace GmtkJam2020
 
         public Texture2D Pixel { get; private set; }
 
+        public Random Random { get; private set; }
+
         RenderTarget2D renderTarget;
 
         private Level level;
@@ -25,6 +29,7 @@ namespace GmtkJam2020
         public GameCore()
         {
             Instance = this;
+            Random = new Random();
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -37,6 +42,10 @@ namespace GmtkJam2020
 
         protected override void LoadContent()
         {
+            SpriteManager.LoadSprite("MarsTiles");
+            SpriteManager.LoadSprite("Robot");
+            SpriteManager.LoadSprite("SignalTower");
+
             renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
