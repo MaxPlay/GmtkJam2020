@@ -69,6 +69,7 @@ namespace GmtkJam2020
             new LevelSelectScene();
             new MainMenuScene();
             new GameScene();
+            new CompletionScene();
 
             SceneManager.SetScene<MainMenuScene>();
         }
