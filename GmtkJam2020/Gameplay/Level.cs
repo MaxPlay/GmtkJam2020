@@ -291,7 +291,7 @@ namespace GmtkJam2020.Gameplay
                     }
                     else
                     {
-                        sceneManager.SetScene<MainMenuScene>();
+                        sceneManager.SetScene<CompletionScene>();
                     }
                 }
 

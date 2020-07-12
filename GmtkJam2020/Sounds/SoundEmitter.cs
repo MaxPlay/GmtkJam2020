@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GmtkJam2020.Sound
 {
-    class SoundEmmitter
+    class SoundEmitter
     {
         List<SoundData> possibleSounds;
 
@@ -19,7 +19,7 @@ namespace GmtkJam2020.Sound
             soundEffectInstances = new List<SoundEffectInstance>();
         }
 
-        public SoundEmmitter(List<SoundData> soundFiles)
+        public SoundEmitter(List<SoundData> soundFiles)
         {
             possibleSounds = soundFiles;
         }
@@ -79,12 +79,9 @@ namespace GmtkJam2020.Sound
 
         public struct SoundData
         {
-            string name;
+            public string Name { get; set; }
 
-            SoundEffect soundEffect;
-
-            public string Name { get => name; set => name = value; }
-            public SoundEffect SoundEffect { get => soundEffect; set => soundEffect = value; }
+            public SoundEffect SoundEffect { get; set; }
         }
     }
 }
