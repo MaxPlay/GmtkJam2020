@@ -43,7 +43,7 @@ namespace GmtkJam2020.Scenes
             Sprite = SpriteManager.Sprites["TitleScreen"].CreateInstance();
             SelectedIndex = 1;
             PreviousLevelButton = new Button() { Text = "Previous Level", Index = 0, Bounds = new Rectangle(170, 75, 140, 25), Execute = PreviousLevel };
-            StartButton = new Button() { Text = "Start", Index = 1, Bounds = new Rectangle(170, 100, 140, 25), Execute = StartGame };
+            StartButton = new Button() { Text = "Start Level", Index = 1, Bounds = new Rectangle(170, 100, 140, 25), Execute = StartGame };
             NextLevelButton = new Button() { Text = "Next Level", Index = 2, Bounds = new Rectangle(170, 125, 140, 25), Execute = NextLevel };
             BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(170, 150, 140, 25), Execute = Back };
             buttons = new List<Button>
@@ -60,7 +60,7 @@ namespace GmtkJam2020.Scenes
 
         private void UpdateStartButtonText()
         {
-            StartButton.Text = $"Start {levels[SelectedLevel]}";
+            StartButton.Text = $"Start Level {levels[SelectedLevel]}";
         }
 
         private void Back()
