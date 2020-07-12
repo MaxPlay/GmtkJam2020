@@ -12,28 +12,28 @@
   "Animations": [
     {
       "Name": "Idle_Down",
-      "Frames": [ 0 ],
+      "Frames": [ 0, 1, 2, 3 ],
       "Effect": "None",
       "Loops": true
     },
     {
       "Name": "Idle_Up",
-      "Frames": [ 14 ],
+      "Frames": [ 14, 15, 16, 17 ],
       "Effect": "None",
       "Loops": true
     },
     {
       "Name": "Idle_Left",
-      "Frames": [ 7 ],
+      "Frames": [ 7, 8, 9, 10 ],
       "Effect": "None",
       "Loops": true
     },
     {
       "Name": "Idle_Right",
-      "Frames": [ 7 ],
+      "Frames": [ 7, 8, 9, 10 ],
       "Effect": "FlipHorizontally",
       "Loops": true
     }
   ],
-  "Frames": [ ]
+  "Frames": []
 }

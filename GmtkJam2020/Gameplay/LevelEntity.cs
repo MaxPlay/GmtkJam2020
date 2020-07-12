@@ -22,5 +22,10 @@ namespace GmtkJam2020.Gameplay
         protected SpriteInstance sprite;
 
         public abstract void Draw();
+
+        public virtual void Update(float deltaTime)
+        {
+            sprite?.Animator?.Update(deltaTime);
+        }
     }
 }

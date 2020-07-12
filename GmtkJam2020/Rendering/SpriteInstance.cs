@@ -12,7 +12,7 @@ namespace GmtkJam2020.Rendering
     {
         public Sprite Source { get; set; }
 
-        public Animator Animator { get; set; } = new Animator() { FrameDuration = 0.5f };
+        public Animator Animator { get; set; } = new Animator() { FrameDuration = 0.3f };
 
         public void Draw(Vector2 position)
         {
