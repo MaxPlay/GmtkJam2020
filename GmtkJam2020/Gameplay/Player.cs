@@ -1,4 +1,5 @@
 ﻿using GmtkJam2020.Rendering;
+using GmtkJam2020.Sounds;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -272,6 +273,7 @@ namespace GmtkJam2020.Gameplay
             if (canMove)
             {
                 Position = newPosition;
+                SoundManager.PlaySound("Step");
                 Level.Collect(Position);
                 UpdateActionAvailability();
             }
