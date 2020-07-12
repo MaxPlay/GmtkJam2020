@@ -1,29 +1,35 @@
-﻿using System;
+﻿using GmtkJam2020.UI;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GmtkJam2020.UI;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace GmtkJam2020.Scenes
 {
-    public class MainMenuScene : Scene
+    public class LevelSelectScene : Scene
     {
-        public override string Name => "MainMenu";
+        public override string Name => "Level Select";
 
         public Button StartButton { get; set; }
 
-        public Button LevelSelectButton { get; set; }
+        public Button NextLevelButton { get; set; }
 
-        public Button QuitButton { get; set; }
+        public Button PreviousLevelButton { get; set; }
+
+        public Button BackButton { get; set; }
 
         public int SelectedIndex { get; set; }
+
+        public int SelectedLevel { get; set; }
 
         public MenuController MenuController { get; set; }
 
         private List<Button> buttons;
+
+        private List<string> levels;
 
         public override void Draw(float deltaTime)
         {
@@ -33,27 +39,50 @@ namespace GmtkJam2020.Scenes
         public override void Start()
         {
             StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(80, 0, 160, 30), Execute = StartGame };
-            LevelSelectButton = new Button() { Text = "Level Select", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = LevelSelect };
-            QuitButton = new Button() { Text = "Quit", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = GameCore.Instance.Exit };
+            NextLevelButton = new Button() { Text = "Next Level", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = NextLevel };
+            PreviousLevelButton = new Button() { Text = "Previous Level", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = PreviousLevel };
+            BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(80, 120, 160, 30), Execute = Back };
             buttons = new List<Button>
             {
                 StartButton,
-                LevelSelectButton,
-                QuitButton
+                NextLevelButton,
+                PreviousLevelButton,
+                BackButton
             };
             MenuController = Manager.MenuController;
+            levels = Manager.GetScene<GameScene>().LevelManager.Levels;
+            UpdateStartButtonText();
         }
 
-        private void LevelSelect()
+        private void UpdateStartButtonText()
         {
-            Manager.SetScene<LevelSelectScene>();
+            StartButton.Text = $"Start {levels[SelectedLevel]}";
+        }
+
+        private void Back()
+        {
+            Manager.SetScene<MainMenuScene>();
+        }
+
+        private void PreviousLevel()
+        {
+            SelectedLevel--;
+            if (SelectedLevel == -1)
+                SelectedLevel = levels.Count - 1;
+            UpdateStartButtonText();
+        }
+
+        private void NextLevel()
+        {
+            SelectedLevel++;
+            if (SelectedLevel == levels.Count)
+                SelectedLevel = 0;
+            UpdateStartButtonText();
         }
 
         private void StartGame()
         {
-            GameScene gameScene = Manager.GetScene<GameScene>();
-            if(gameScene.CurrentLevel == null)
-                gameScene.CurrentLevel = "1";
+            Manager.GetScene<GameScene>().SetLevel(SelectedLevel);
             Manager.SetScene<GameScene>();
         }
 

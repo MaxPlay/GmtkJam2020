@@ -1,4 +1,5 @@
 ﻿using GmtkJam2020.Rendering;
+using GmtkJam2020.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -53,12 +54,14 @@ namespace GmtkJam2020.Gameplay
 
         public Point TileSize { get; private set; }
 
+        public string NextLevel { get; private set; }
+
         public Player Player { get; set; }
 
         public Tower Tower { get; set; }
 
         public List<Diamond> Diamonds { get; } = new List<Diamond>();
-        
+
         private Level(int width, int height)
         {
             Width = width;
@@ -106,16 +109,18 @@ namespace GmtkJam2020.Gameplay
             if (lines.Length <= 2)
                 return new Level(0, 0);
 
-            int.TryParse(lines[0], out int width);
-            int.TryParse(lines[1], out int height);
+            string nextLevel = lines[0];
+            int.TryParse(lines[1], out int width);
+            int.TryParse(lines[2], out int height);
 
             Level level = Create(width, height, new Point(DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT));
+            level.NextLevel = nextLevel;
             level.Player = null;
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    char value = char.ToLowerInvariant(lines[y + 2][x]);
+                    char value = char.ToLowerInvariant(lines[y + 3][x]);
                     if (parserMapping.ContainsKey(value))
                     {
                         level.data[x, y] = new LevelTile() { Type = parserMapping[value], Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
@@ -130,7 +135,7 @@ namespace GmtkJam2020.Gameplay
                             if (level.Tower == null)
                                 level.Tower = new Tower(x, y) { Level = level };
                         }
-                        else if (level.data[x,y].Type == TileType.Diamond)
+                        else if (level.data[x, y].Type == TileType.Diamond)
                         {
                             level.Diamonds.Add(new Diamond(x, y) { Level = level });
                         }
@@ -141,7 +146,7 @@ namespace GmtkJam2020.Gameplay
             }
 
             if (level.Tower != null)
-                for (int i = 2 + height; i < lines.Length; i++)
+                for (int i = 3 + height; i < lines.Length; i++)
                 {
                     if (lines[i].Length > 1)
                     {
@@ -262,7 +267,7 @@ namespace GmtkJam2020.Gameplay
 
             for (int i = 0; i < Diamonds.Count; i++)
             {
-                if(Diamonds[i].Position == position)
+                if (Diamonds[i].Position == position)
                 {
                     Diamonds.RemoveAt(i);
                     data[position.X, position.Y].Type = TileType.Floor;
@@ -272,7 +277,24 @@ namespace GmtkJam2020.Gameplay
             }
 
             if (collected)
+            {
+                if (Diamonds.Count == 0)
+                {
+                    SceneManager sceneManager = GameCore.Instance.SceneManager;
+                    if (!string.IsNullOrWhiteSpace(NextLevel))
+                    {
+                        GameScene gameScene = sceneManager.GetScene<GameScene>();
+                        gameScene.CurrentLevel = NextLevel;
+                        sceneManager.SetScene<GameScene>();
+                    }
+                    else
+                    {
+                        sceneManager.SetScene<MainMenuScene>();
+                    }
+                }
+
                 UpdateDistances();
+            }
         }
 
         public LevelTile GetTile(Point point)

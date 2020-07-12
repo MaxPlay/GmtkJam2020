@@ -53,6 +53,7 @@ namespace GmtkJam2020
             SpriteManager.LoadSprite("LevelUI_Icons");
 
             SpriteManager.LoadFont("Font");
+            SpriteManager.LoadFont("MenuFont");
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
@@ -60,11 +61,11 @@ namespace GmtkJam2020
             Pixel.SetData(new Color[] { Color.White });
 
             new SplashScreen();
+            new LevelSelectScene();
             new MainMenuScene();
             new GameScene();
 
-            SceneManager.GetScene<GameScene>().CurrentLevel = "0";
-            SceneManager.SetScene<GameScene>();
+            SceneManager.SetScene<MainMenuScene>();
         }
 
         protected override void UnloadContent()
@@ -87,15 +88,16 @@ namespace GmtkJam2020
             GraphicsDevice.SetRenderTarget(renderTarget);
 
             GraphicsDevice.Clear(Color.Black);
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             SceneManager.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
             SpriteBatch.End();
-
+            
             GraphicsDevice.SetRenderTarget(null);
-            SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+            GraphicsDevice.Clear(Color.Black);
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp);
             SpriteBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight), Color.White);
             SpriteBatch.End();
-
+            
             base.Draw(gameTime);
         }
     }

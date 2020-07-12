@@ -15,6 +15,8 @@ namespace GmtkJam2020.Scenes
 
         public Scene CurrentScene { get; private set; }
 
+        public MenuController MenuController { get; private set; } = new MenuController();
+
         public T GetScene<T>() where T : Scene => NamedScenes[typeof(T)] as T;
 
         public void RegisterScene(Scene scene)
@@ -36,7 +38,11 @@ namespace GmtkJam2020.Scenes
             }
         }
 
-        public void Update(float deltaTime) => CurrentScene?.Update(deltaTime);
+        public void Update(float deltaTime)
+        {
+            MenuController.Update();
+            CurrentScene?.Update(deltaTime);
+        }
 
         public void Draw(float deltaTime) => CurrentScene?.Draw(deltaTime);
     }

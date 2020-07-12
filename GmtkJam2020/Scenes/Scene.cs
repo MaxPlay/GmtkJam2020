@@ -7,7 +7,10 @@ namespace GmtkJam2020.Scenes
         public Scene()
         {
             GameCore.Instance.SceneManager.RegisterScene(this);
+            Manager = GameCore.Instance.SceneManager;
         }
+
+        public SceneManager Manager { get; }
 
         public abstract string Name { get; }
 

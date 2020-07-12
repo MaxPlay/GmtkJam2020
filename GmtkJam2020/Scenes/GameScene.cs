@@ -13,6 +13,8 @@ namespace GmtkJam2020.Scenes
     {
         public override string Name => "Game";
 
+        public LevelManager LevelManager { get; } = new LevelManager();
+
         private LevelUI levelUI;
         private Level level;
         private PlayerController controller;
@@ -24,7 +26,7 @@ namespace GmtkJam2020.Scenes
         }
 
         public string CurrentLevel { get; set; }
-        
+
         public override void Start()
         {
             levelUI = new LevelUI();
@@ -42,6 +44,12 @@ namespace GmtkJam2020.Scenes
             controller.Update();
             level.Update(deltaTime);
             levelUI.Update(level.Player);
+        }
+
+        public void SetLevel(int selectedLevel)
+        {
+            if (selectedLevel >= 0 && selectedLevel < LevelManager.Levels.Count)
+                CurrentLevel = LevelManager.Levels[selectedLevel];
         }
     }
 }

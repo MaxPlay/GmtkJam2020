@@ -46,6 +46,7 @@
     <Compile Include="Gameplay\Diamond.cs" />
     <Compile Include="Gameplay\Level.cs" />
     <Compile Include="Gameplay\LevelEntity.cs" />
+    <Compile Include="Gameplay\LevelManager.cs" />
     <Compile Include="Gameplay\LevelTile.cs" />
     <Compile Include="Gameplay\Orientation.cs" />
     <Compile Include="Gameplay\Player.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Rendering\SpriteInstance.cs" />
     <Compile Include="Rendering\SpriteManager.cs" />
     <Compile Include="Scenes\GameScene.cs" />
+    <Compile Include="Scenes\LevelSelectScene.cs" />
     <Compile Include="Scenes\MainMenuScene.cs" />
     <Compile Include="Scenes\MenuController.cs" />
     <Compile Include="Scenes\Scene.cs" />
@@ -85,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\fonts\MenuFont.spritefont" />
     <None Include="Content\fonts\Font.spritefont" />
     <None Include="Content\fonts\Pixeled.ttf" />
     <None Include="Content\Levels\0.lvl">
@@ -97,6 +100,54 @@
     <Content Include="Content\Sprites\Robot.png" />
     <Content Include="Content\Sprites\SignalTower.png" />
     <Content Include="Icon.ico" />
+    <None Include="Content\Levels\1.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\10.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\2.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\3.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\4.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\5.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\6.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\7.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\8.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\9.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\BreakLearn.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\empty.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\GrabLearn.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\PullLearn.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\PushLearn.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Levels\walls.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sprites\Diamond.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
