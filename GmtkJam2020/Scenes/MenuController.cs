@@ -8,5 +8,9 @@ namespace GmtkJam2020.Scenes
 {
     public class MenuController : Controller
     {
+        public MenuController()
+        {
+            DeadZone = 0.3f;
+        }
     }
 }

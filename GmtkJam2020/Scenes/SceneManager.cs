@@ -31,7 +31,7 @@ namespace GmtkJam2020.Scenes
 
         public void SetScene<T>() where T : Scene
         {
-            if(typeof(T) == typeof(GameScene))
+            if (typeof(T) == typeof(GameScene))
             {
                 SoundManager.PlayMusic("LevelMusic");
             }

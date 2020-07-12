@@ -22,10 +22,10 @@ namespace GmtkJam2020.Gameplay
                 [PlayerCommand.MoveUp] = () => IsKeyPressed(Keys.Up) || IsKeyPressed(Keys.W) || IsButtonPressed(Buttons.DPadUp) || IsDirection(Axis.Left, Direction.Up),
                 [PlayerCommand.MoveLeft] = () => IsKeyPressed(Keys.Right) || IsKeyPressed(Keys.D) || IsButtonPressed(Buttons.DPadRight) || IsDirection(Axis.Left, Direction.Right),
                 [PlayerCommand.MoveRight] = () => IsKeyPressed(Keys.Left) || IsKeyPressed(Keys.A) || IsButtonPressed(Buttons.DPadLeft) || IsDirection(Axis.Left, Direction.Left),
-                [PlayerCommand.Push] = () => keyboardState.IsKeyDown(Keys.D1) || gamePadState.IsButtonDown(Buttons.A),
-                [PlayerCommand.Pull] = () => keyboardState.IsKeyDown(Keys.D2) || gamePadState.IsButtonDown(Buttons.B),
-                [PlayerCommand.Grab] = () => keyboardState.IsKeyDown(Keys.D3) || gamePadState.IsButtonDown(Buttons.X),
-                [PlayerCommand.Destroy] = () => keyboardState.IsKeyDown(Keys.D4) || gamePadState.IsButtonDown(Buttons.Y),
+                [PlayerCommand.Push] = () => keyboardState.IsKeyDown(Keys.J) || gamePadState.IsButtonDown(Buttons.A),
+                [PlayerCommand.Pull] = () => keyboardState.IsKeyDown(Keys.K) || gamePadState.IsButtonDown(Buttons.B),
+                [PlayerCommand.Grab] = () => keyboardState.IsKeyDown(Keys.H) || gamePadState.IsButtonDown(Buttons.X),
+                [PlayerCommand.Destroy] = () => keyboardState.IsKeyDown(Keys.U) || gamePadState.IsButtonDown(Buttons.Y),
             };
         }
 
