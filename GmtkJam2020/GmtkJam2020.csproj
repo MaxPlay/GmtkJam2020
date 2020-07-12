@@ -101,6 +101,7 @@
     <Content Include="Content\Sprites\MarsTiles.png" />
     <Content Include="Content\Sprites\Robot.png" />
     <Content Include="Content\Sprites\SignalTower.png" />
+    <Content Include="Content\Sprites\TitleScreen.png" />
     <Content Include="Icon.ico" />
     <None Include="Content\Levels\01.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -160,6 +161,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\Robot.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\TitleScreen.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\SignalTower.json">

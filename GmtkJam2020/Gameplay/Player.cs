@@ -279,6 +279,9 @@ namespace GmtkJam2020.Gameplay
 
         public void Destroy()
         {
+            if (!IsActionAvailable(PlayerAction.Destroy))
+                return;
+
             Point targetPosition = GetPositionInFront();
 
             Level.DestroyTile(targetPosition);

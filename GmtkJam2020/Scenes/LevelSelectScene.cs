@@ -1,4 +1,5 @@
-﻿using GmtkJam2020.UI;
+﻿using GmtkJam2020.Rendering;
+using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -20,7 +21,7 @@ namespace GmtkJam2020.Scenes
         public Button PreviousLevelButton { get; set; }
 
         public Button BackButton { get; set; }
-
+        public SpriteInstance Sprite { get; private set; }
         public int SelectedIndex { get; set; }
 
         public int SelectedLevel { get; set; }
@@ -33,15 +34,18 @@ namespace GmtkJam2020.Scenes
 
         public override void Draw(float deltaTime)
         {
+            Sprite.DrawFrame(new Vector2(), "Default");
             buttons.ForEach(b => b.Draw(SelectedIndex));
         }
 
         public override void Start()
         {
-            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(80, 0, 160, 30), Execute = StartGame };
-            NextLevelButton = new Button() { Text = "Next Level", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = NextLevel };
-            PreviousLevelButton = new Button() { Text = "Previous Level", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = PreviousLevel };
-            BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(80, 120, 160, 30), Execute = Back };
+            Sprite = SpriteManager.Sprites["TitleScreen"].CreateInstance();
+            SelectedIndex = 1;
+            PreviousLevelButton = new Button() { Text = "Previous Level", Index = 0, Bounds = new Rectangle(170, 75, 140, 25), Execute = PreviousLevel };
+            StartButton = new Button() { Text = "Start", Index = 1, Bounds = new Rectangle(170, 100, 140, 25), Execute = StartGame };
+            NextLevelButton = new Button() { Text = "Next Level", Index = 2, Bounds = new Rectangle(170, 125, 140, 25), Execute = NextLevel };
+            BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(170, 150, 140, 25), Execute = Back };
             buttons = new List<Button>
             {
                 StartButton,

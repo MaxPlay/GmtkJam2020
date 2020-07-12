@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GmtkJam2020.Rendering;
 using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -13,6 +14,7 @@ namespace GmtkJam2020.Scenes
     {
         public override string Name => "MainMenu";
 
+        public SpriteInstance Sprite { get; private set; }
         public Button StartButton { get; set; }
 
         public Button LevelSelectButton { get; set; }
@@ -27,14 +29,16 @@ namespace GmtkJam2020.Scenes
 
         public override void Draw(float deltaTime)
         {
+            Sprite.DrawFrame(new Vector2(), "Default");
             buttons.ForEach(b => b.Draw(SelectedIndex));
         }
 
         public override void Start()
         {
-            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(80, 0, 160, 30), Execute = StartGame };
-            LevelSelectButton = new Button() { Text = "Level Select", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = LevelSelect };
-            QuitButton = new Button() { Text = "Quit", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = GameCore.Instance.Exit };
+            Sprite = SpriteManager.Sprites["TitleScreen"].CreateInstance();
+            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(170, 80, 140, 25), Execute = StartGame };
+            LevelSelectButton = new Button() { Text = "Level Select", Index = 1, Bounds = new Rectangle(170, 115, 140, 25), Execute = LevelSelect };
+            QuitButton = new Button() { Text = "Quit", Index = 2, Bounds = new Rectangle(170, 150, 140, 25), Execute = GameCore.Instance.Exit };
             buttons = new List<Button>
             {
                 StartButton,

@@ -46,6 +46,7 @@ namespace GmtkJam2020
 
         protected override void LoadContent()
         {
+            SpriteManager.LoadSprite("TitleScreen");
             SpriteManager.LoadSprite("MarsTiles");
             SpriteManager.LoadSprite("Robot");
             SpriteManager.LoadSprite("SignalTower");
