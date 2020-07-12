@@ -8,5 +8,6 @@
         Movable,
         Destructible,
         Tower,
+        Diamond,
     }
 }

@@ -8,18 +8,13 @@ using System.Threading.Tasks;
 
 namespace GmtkJam2020.Gameplay
 {
-    public class Tower
+    public class Tower : LevelEntity
     {
-        public Tower(int x, int y)
+        public Tower(int x, int y) : base(x, y)
         {
-            Position = new Point(x, y);
             sprite = SpriteManager.Sprites["SignalTower"].CreateInstance();
             sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle"]);
         }
-
-        SpriteInstance sprite;
-
-        public Point Position { get; set; }
 
         public int MoveDistance { get; set; } = int.MaxValue;
 
@@ -33,9 +28,7 @@ namespace GmtkJam2020.Gameplay
 
         public int DestroyDistance { get; set; } = 0;
 
-        public Level Level { get; set; }
-
-        public void Draw()
+        public override void Draw()
         {
             sprite.DrawAnimation(new Vector2(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT));
         }

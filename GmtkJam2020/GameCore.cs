@@ -45,6 +45,8 @@ namespace GmtkJam2020
             SpriteManager.LoadSprite("MarsTiles");
             SpriteManager.LoadSprite("Robot");
             SpriteManager.LoadSprite("SignalTower");
+            SpriteManager.LoadSprite("Diamond");
+            SpriteManager.LoadSprite("LevelUI");
 
             renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);

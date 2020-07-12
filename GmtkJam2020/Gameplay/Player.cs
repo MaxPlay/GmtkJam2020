@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GmtkJam2020.Gameplay
 {
-    public class Player
+    public class Player : LevelEntity
     {
         Dictionary<PlayerAction, bool> actionAvailability = new Dictionary<PlayerAction, bool>()
         {
@@ -21,22 +21,15 @@ namespace GmtkJam2020.Gameplay
             [PlayerAction.Turn] = false
         };
 
-        public Player(int x, int y)
+        public Player(int x, int y) : base(x, y)
         {
-            Position = new Point(x, y);
             sprite = SpriteManager.Sprites["Robot"].CreateInstance();
             sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Up"]);
         }
 
-        public Point Position { get; set; }
-
         public Orientation MoveDirection { get; private set; }
 
-        public Level Level { get; set; }
-
         public PlayerAction CurrentAction { get; set; }
-
-        SpriteInstance sprite;
 
         public void UpdateActionAvailability()
         {
@@ -254,7 +247,11 @@ namespace GmtkJam2020.Gameplay
                 {
                     if (forward)
                     {
-                        if (Level.IsMovable(levelTile.Type) && (CurrentAction == PlayerAction.Push && IsActionAvailable(PlayerAction.Push) || CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab)))
+                        if (Level.IsCollectible(levelTile.Type))
+                        {
+                            canMove = true;
+                        }
+                        else if (Level.IsMovable(levelTile.Type) && (CurrentAction == PlayerAction.Push && IsActionAvailable(PlayerAction.Push) || CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab)))
                         {
                             if (!Level.PushTile(newPosition, direction))
                                 canMove = false;
@@ -264,7 +261,8 @@ namespace GmtkJam2020.Gameplay
                     }
                     else
                     {
-                        canMove = false;
+                        if (!Level.IsCollectible(levelTile.Type))
+                            canMove = false;
                     }
                 }
             }
@@ -273,6 +271,7 @@ namespace GmtkJam2020.Gameplay
             {
                 Position = newPosition;
                 UpdateActionAvailability();
+                Level.Collect(Position);
             }
         }
 
@@ -305,7 +304,7 @@ namespace GmtkJam2020.Gameplay
             }
         }
 
-        public void Draw()
+        public override void Draw()
         {
             sprite.DrawAnimation(new Vector2(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT));
         }

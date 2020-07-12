@@ -21,7 +21,8 @@ namespace GmtkJam2020.Gameplay
             ['p'] = TileType.Player,
             ['m'] = TileType.Movable,
             ['d'] = TileType.Destructible,
-            ['t'] = TileType.Tower
+            ['t'] = TileType.Tower,
+            ['c'] = TileType.Diamond
         };
 
         private LevelTile[,] data;
@@ -30,10 +31,12 @@ namespace GmtkJam2020.Gameplay
         private List<TileType> movableTiles = new List<TileType>() { TileType.Movable };
         private List<TileType> blockingTiles = new List<TileType>() { TileType.Wall, TileType.Tower, TileType.Destructible };
         private List<TileType> walkableTiles = new List<TileType>() { TileType.Floor };
+        private List<TileType> collectibleTiles = new List<TileType>() { TileType.Diamond };
 
         public bool IsMovable(TileType tile) => movableTiles.Contains(tile);
         public bool IsBlocking(TileType tile) => blockingTiles.Contains(tile);
         public bool IsWalkable(TileType tile) => walkableTiles.Contains(tile);
+        public bool IsCollectible(TileType tile) => collectibleTiles.Contains(tile);
 
         private readonly static string[] floortiles = { "Floor0", "Floor1", "Floor2", "Floor3", "Floor4" };
 
@@ -51,6 +54,8 @@ namespace GmtkJam2020.Gameplay
 
         public Tower Tower { get; set; }
 
+        public List<Diamond> Diamonds { get; } = new List<Diamond>();
+        
         private Level(int width, int height)
         {
             Width = width;
@@ -121,6 +126,10 @@ namespace GmtkJam2020.Gameplay
                         {
                             if (level.Tower == null)
                                 level.Tower = new Tower(x, y) { Level = level };
+                        }
+                        else if (level.data[x,y].Type == TileType.Diamond)
+                        {
+                            level.Diamonds.Add(new Diamond(x, y) { Level = level });
                         }
                     }
                     else
@@ -244,6 +253,25 @@ namespace GmtkJam2020.Gameplay
             return false;
         }
 
+        public void Collect(Point position)
+        {
+            bool collected = false;
+
+            for (int i = 0; i < Diamonds.Count; i++)
+            {
+                if(Diamonds[i].Position == position)
+                {
+                    Diamonds.RemoveAt(i);
+                    data[position.X, position.Y].Type = TileType.Floor;
+                    collected = true;
+                    break;
+                }
+            }
+
+            if (collected)
+                UpdateDistances();
+        }
+
         public LevelTile GetTile(Point point)
         {
             if (Bounds.Contains(point))
@@ -294,6 +322,7 @@ namespace GmtkJam2020.Gameplay
                 }
             }
 
+            Diamonds.ForEach(d => d?.Draw());
             Player?.Draw();
             Tower?.Draw();
         }
