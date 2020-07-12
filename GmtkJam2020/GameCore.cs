@@ -21,6 +21,8 @@ namespace GmtkJam2020
 
         public Random Random { get; private set; }
 
+        public bool DebugEnabled { get; set; }
+
         RenderTarget2D renderTarget;
 
         private Level level;
@@ -70,6 +72,11 @@ namespace GmtkJam2020
 
         protected override void Update(GameTime gameTime)
         {
+            {
+                KeyboardState keyboardState = Keyboard.GetState();
+                DebugEnabled = keyboardState.IsKeyDown(Keys.F3);
+            }
+
             Controller.Update();
             levelUI.Update(level.Player);
             base.Update(gameTime);

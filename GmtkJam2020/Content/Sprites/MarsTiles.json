@@ -79,6 +79,10 @@
     {
       "Name": "Movable",
       "Frame": 16
+    },
+    {
+      "Name": "MoveBreakable",
+      "Frame": 17
     }
   ]
 }

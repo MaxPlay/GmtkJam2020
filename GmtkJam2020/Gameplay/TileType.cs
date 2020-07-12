@@ -9,5 +9,6 @@
         Destructible,
         Tower,
         Diamond,
+        MoveDestructible
     }
 }

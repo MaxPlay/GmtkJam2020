@@ -272,8 +272,8 @@ namespace GmtkJam2020.Gameplay
             if (canMove)
             {
                 Position = newPosition;
-                UpdateActionAvailability();
                 Level.Collect(Position);
+                UpdateActionAvailability();
             }
         }
 

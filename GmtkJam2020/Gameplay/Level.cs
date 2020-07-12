@@ -22,20 +22,23 @@ namespace GmtkJam2020.Gameplay
             ['m'] = TileType.Movable,
             ['d'] = TileType.Destructible,
             ['t'] = TileType.Tower,
-            ['c'] = TileType.Diamond
+            ['c'] = TileType.Diamond,
+            ['v'] = TileType.MoveDestructible
         };
 
         private LevelTile[,] data;
         readonly Dictionary<TileType, Color> tileColors;
 
-        private List<TileType> movableTiles = new List<TileType>() { TileType.Movable };
+        private List<TileType> movableTiles = new List<TileType>() { TileType.Movable, TileType.MoveDestructible };
         private List<TileType> blockingTiles = new List<TileType>() { TileType.Wall, TileType.Tower, TileType.Destructible };
         private List<TileType> walkableTiles = new List<TileType>() { TileType.Floor };
         private List<TileType> collectibleTiles = new List<TileType>() { TileType.Diamond };
+        private List<TileType> destructibleTiles = new List<TileType>() { TileType.Destructible, TileType.MoveDestructible };
 
         public bool IsMovable(TileType tile) => movableTiles.Contains(tile);
         public bool IsBlocking(TileType tile) => blockingTiles.Contains(tile);
         public bool IsWalkable(TileType tile) => walkableTiles.Contains(tile);
+        public bool IsDestructible(TileType tile) => destructibleTiles.Contains(tile);
         public bool IsCollectible(TileType tile) => collectibleTiles.Contains(tile);
 
         private readonly static string[] floortiles = { "Floor0", "Floor1", "Floor2", "Floor3", "Floor4" };
@@ -168,8 +171,8 @@ namespace GmtkJam2020.Gameplay
             if (!IsWalkable(centerTile.Type))
                 return false;
 
+            data[end.X, end.Y].Type = data[start.X, start.Y].Type;
             data[start.X, start.Y].Type = TileType.Floor;
-            data[end.X, end.Y].Type = TileType.Movable;
             UpdateDistances();
             return true;
         }
@@ -243,8 +246,8 @@ namespace GmtkJam2020.Gameplay
 
             if (IsWalkable(GetTile(newPosition).Type))
             {
+                data[newPosition.X, newPosition.Y].Type = data[position.X, position.Y].Type;
                 data[position.X, position.Y].Type = TileType.Floor;
-                data[newPosition.X, newPosition.Y].Type = TileType.Movable;
 
                 UpdateDistances();
                 return true;
@@ -289,7 +292,7 @@ namespace GmtkJam2020.Gameplay
         public void DestroyTile(Point targetPosition)
         {
             LevelTile tile = GetTile(targetPosition);
-            if (tile.Type == TileType.Destructible)
+            if (IsDestructible(tile.Type))
                 data[targetPosition.X, targetPosition.Y].Type = TileType.Floor;
 
             UpdateDistances();
@@ -315,10 +318,14 @@ namespace GmtkJam2020.Gameplay
                         case TileType.Destructible:
                             sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "BreakableWall");
                             break;
+
+                        case TileType.MoveDestructible:
+                            sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "MoveBreakable");
+                            break;
                     }
 
-                    if (data[x, y].Distance != -1)
-                        GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle(x * DEFAULT_TILE_WIDTH, y * DEFAULT_TILE_HEIGHT, DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT), new Color(Color.Green, data[x, y].Distance / 20.0f));
+                    if (GameCore.Instance.DebugEnabled && data[x, y].Distance != -1)
+                        GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle(x * DEFAULT_TILE_WIDTH, y * DEFAULT_TILE_HEIGHT, DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT), new Color(Color.Green, data[x, y].Distance / 30.0f));
                 }
             }
 
