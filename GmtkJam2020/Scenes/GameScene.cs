@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GmtkJam2020.Gameplay;
 using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace GmtkJam2020.Scenes
 {
@@ -30,7 +31,9 @@ namespace GmtkJam2020.Scenes
         public override void Start()
         {
             levelUI = new LevelUI();
-            level = Level.LoadFromFile($"Content/Levels/{CurrentLevel}.lvl");
+            level = Level.LoadFromFile($"Content/Levels/{CurrentLevel}.lvl", out bool success);
+            if (!success)
+                Manager.SetScene<MainMenuScene>();
             controller = new PlayerController() { Player = level.Player, DeadZone = 0.3f };
         }
 
@@ -41,6 +44,8 @@ namespace GmtkJam2020.Scenes
 
         public override void Update(float deltaTime)
         {
+            if (Manager.MenuController.IsKeyPressed(Keys.Escape) || Manager.MenuController.IsButtonPressed(Buttons.Start))
+                Manager.SetScene<MainMenuScene>();
             controller.Update();
             level.Update(deltaTime);
             levelUI.Update(level.Player);

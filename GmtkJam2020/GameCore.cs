@@ -92,7 +92,7 @@ namespace GmtkJam2020
             GraphicsDevice.SetRenderTarget(renderTarget);
 
             GraphicsDevice.Clear(Color.Black);
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
             SceneManager.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
             SpriteBatch.End();
             

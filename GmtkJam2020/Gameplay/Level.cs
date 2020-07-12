@@ -100,8 +100,9 @@ namespace GmtkJam2020.Gameplay
             UpdateDistances();
         }
 
-        public static Level LoadFromFile(string filename)
+        public static Level LoadFromFile(string filename, out bool success)
         {
+            success = false;
             if (!File.Exists(filename))
                 return new Level(0, 0);
 
@@ -158,6 +159,7 @@ namespace GmtkJam2020.Gameplay
 
             level.UpdateDistances();
             level.Player?.UpdateActionAvailability();
+            success = true;
             return level;
         }
 

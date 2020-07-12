@@ -53,7 +53,7 @@ namespace GmtkJam2020.Scenes
         {
             GameScene gameScene = Manager.GetScene<GameScene>();
             if(gameScene.CurrentLevel == null)
-                gameScene.CurrentLevel = "1";
+                gameScene.CurrentLevel = "01";
             Manager.SetScene<GameScene>();
         }
 

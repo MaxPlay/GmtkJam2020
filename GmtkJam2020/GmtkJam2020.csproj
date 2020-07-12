@@ -102,34 +102,34 @@
     <Content Include="Content\Sprites\Robot.png" />
     <Content Include="Content\Sprites\SignalTower.png" />
     <Content Include="Icon.ico" />
-    <None Include="Content\Levels\1.lvl">
+    <None Include="Content\Levels\01.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\10.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\2.lvl">
+    <None Include="Content\Levels\02.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\3.lvl">
+    <None Include="Content\Levels\03.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\4.lvl">
+    <None Include="Content\Levels\04.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\5.lvl">
+    <None Include="Content\Levels\05.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\6.lvl">
+    <None Include="Content\Levels\06.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\7.lvl">
+    <None Include="Content\Levels\07.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\8.lvl">
+    <None Include="Content\Levels\08.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Levels\9.lvl">
+    <None Include="Content\Levels\09.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Levels\BreakLearn.lvl">
