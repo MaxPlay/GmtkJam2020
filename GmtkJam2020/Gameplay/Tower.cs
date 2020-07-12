@@ -8,35 +8,42 @@ using System.Threading.Tasks;
 
 namespace GmtkJam2020.Gameplay
 {
-    public class Tower
+    public class Tower : LevelEntity
     {
-        public Tower(int x, int y)
+        public Tower(int x, int y) : base(x, y)
         {
-            Position = new Point(x, y);
             sprite = SpriteManager.Sprites["SignalTower"].CreateInstance();
             sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle"]);
         }
 
-        SpriteInstance sprite;
+        public int MoveDistance { get; set; } = int.MaxValue;
 
-        public Point Position { get; set; }
+        public int TurnDistance { get; set; } = int.MaxValue;
 
-        public int MoveDistance { get; set; }
+        public int GrabDistance { get; set; } = 0;
 
-        public int TurnDistance { get; set; }
+        public int PushDistance { get; set; } = 0;
 
-        public int GrabDistance { get; set; }
+        public int PullDistance { get; set; } = 0;
 
-        public int PushDistance { get; set; }
+        public int DestroyDistance { get; set; } = 0;
 
-        public int PullDistance { get; set; }
-
-        public int DestroyDistance { get; set; }
-        public Level Level { get; internal set; }
-
-        public void Draw()
+        public override void Draw()
         {
             sprite.DrawAnimation(new Vector2(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT));
+        }
+
+        public void SetDistance(char type, int value)
+        {
+            switch (type)
+            {
+                case 'd': DestroyDistance = value; break;
+                case 'm': MoveDistance = value; break;
+                case 't': TurnDistance = value; break;
+                case 'g': GrabDistance = value; break;
+                case 'p': PushDistance = value; break;
+                case 'l': PullDistance = value; break;
+            }
         }
     }
 }

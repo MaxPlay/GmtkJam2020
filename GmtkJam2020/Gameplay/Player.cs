@@ -8,28 +8,45 @@ using System.Threading.Tasks;
 
 namespace GmtkJam2020.Gameplay
 {
-    public class Player
+    public class Player : LevelEntity
     {
-        public Player(int x, int y)
+        Dictionary<PlayerAction, bool> actionAvailability = new Dictionary<PlayerAction, bool>()
         {
-            Position = new Point(x, y);
+            [PlayerAction.Destroy] = false,
+            [PlayerAction.Grab] = false,
+            [PlayerAction.Move] = false,
+            [PlayerAction.None] = false,
+            [PlayerAction.Pull] = false,
+            [PlayerAction.Push] = false,
+            [PlayerAction.Turn] = false
+        };
+
+        public Player(int x, int y) : base(x, y)
+        {
             sprite = SpriteManager.Sprites["Robot"].CreateInstance();
             sprite.Animator.SetAnimation(sprite.Source.NamedAnimations["Idle_Up"]);
         }
 
-        public Point Position { get; set; }
-
         public Orientation MoveDirection { get; private set; }
-
-        public Level Level { get; set; }
 
         public PlayerAction CurrentAction { get; set; }
 
-        SpriteInstance sprite;
+        public void UpdateActionAvailability()
+        {
+            int distance = Level.GetTile(Position).Distance;
+            actionAvailability[PlayerAction.Destroy] = Level.Tower.DestroyDistance > distance;
+            actionAvailability[PlayerAction.Grab] = Level.Tower.GrabDistance > distance;
+            actionAvailability[PlayerAction.Move] = Level.Tower.MoveDistance > distance;
+            actionAvailability[PlayerAction.Pull] = Level.Tower.PullDistance > distance;
+            actionAvailability[PlayerAction.Push] = Level.Tower.PushDistance > distance;
+            actionAvailability[PlayerAction.Turn] = Level.Tower.TurnDistance > distance;
+        }
+
+        public bool IsActionAvailable(PlayerAction action) => actionAvailability[action];
 
         public void TurnClockwise()
         {
-            if (CurrentAction == PlayerAction.Grab)
+            if (CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab))
             {
                 LevelTile grabTarget = Level.GetTile(GetPositionInFront());
                 if (Level.IsMovable(grabTarget.Type))
@@ -39,6 +56,9 @@ namespace GmtkJam2020.Gameplay
                 }
             }
 
+            if (!IsActionAvailable(PlayerAction.Turn))
+                return;
+
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -59,11 +79,12 @@ namespace GmtkJam2020.Gameplay
             }
 
             UpdateAnimation();
+            UpdateActionAvailability();
         }
 
         public void TurnCounterClockwise()
         {
-            if (CurrentAction == PlayerAction.Grab)
+            if (CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab))
             {
                 LevelTile grabTarget = Level.GetTile(GetPositionInFront());
                 if (Level.IsMovable(grabTarget.Type))
@@ -73,6 +94,9 @@ namespace GmtkJam2020.Gameplay
                 }
             }
 
+            if (!IsActionAvailable(PlayerAction.Turn))
+                return;
+
             switch (MoveDirection)
             {
                 case Orientation.North:
@@ -93,6 +117,7 @@ namespace GmtkJam2020.Gameplay
             }
 
             UpdateAnimation();
+            UpdateActionAvailability();
         }
 
         public void MoveForward() => MoveToPosition(GetPositionInFront(), MoveDirection, true);
@@ -201,7 +226,10 @@ namespace GmtkJam2020.Gameplay
 
         private void MoveToPosition(Point newPosition, Orientation direction, bool forward)
         {
-            bool canMove = true;
+            bool canMove = IsActionAvailable(PlayerAction.Move);
+            if (!canMove)
+                return;
+
             if (Level != null)
             {
                 LevelTile levelTile = Level.GetTile(newPosition);
@@ -211,7 +239,7 @@ namespace GmtkJam2020.Gameplay
                     {
                         Point positionInFront = GetPositionInFront();
                         LevelTile frontTile = Level.GetTile(positionInFront);
-                        if (Level.IsMovable(frontTile.Type) && (CurrentAction == PlayerAction.Pull || CurrentAction == PlayerAction.Grab))
+                        if (Level.IsMovable(frontTile.Type) && (CurrentAction == PlayerAction.Pull && IsActionAvailable(PlayerAction.Pull) || CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab)))
                             Level.PushTile(positionInFront, (Orientation)((int)(direction + 2) % 4));
                     }
                 }
@@ -219,7 +247,11 @@ namespace GmtkJam2020.Gameplay
                 {
                     if (forward)
                     {
-                        if (Level.IsMovable(levelTile.Type) && (CurrentAction == PlayerAction.Push || CurrentAction == PlayerAction.Grab))
+                        if (Level.IsCollectible(levelTile.Type))
+                        {
+                            canMove = true;
+                        }
+                        else if (Level.IsMovable(levelTile.Type) && (CurrentAction == PlayerAction.Push && IsActionAvailable(PlayerAction.Push) || CurrentAction == PlayerAction.Grab && IsActionAvailable(PlayerAction.Grab)))
                         {
                             if (!Level.PushTile(newPosition, direction))
                                 canMove = false;
@@ -229,13 +261,18 @@ namespace GmtkJam2020.Gameplay
                     }
                     else
                     {
-                        canMove = false;
+                        if (!Level.IsCollectible(levelTile.Type))
+                            canMove = false;
                     }
                 }
             }
 
             if (canMove)
+            {
                 Position = newPosition;
+                UpdateActionAvailability();
+                Level.Collect(Position);
+            }
         }
 
         public void Destroy()
@@ -267,7 +304,7 @@ namespace GmtkJam2020.Gameplay
             }
         }
 
-        public void Draw()
+        public override void Draw()
         {
             sprite.DrawAnimation(new Vector2(Position.X * Level.DEFAULT_TILE_WIDTH, Position.Y * Level.DEFAULT_TILE_HEIGHT));
         }

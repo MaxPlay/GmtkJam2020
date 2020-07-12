@@ -42,7 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameCore.cs" />
+    <Compile Include="Gameplay\Diamond.cs" />
     <Compile Include="Gameplay\Level.cs" />
+    <Compile Include="Gameplay\LevelEntity.cs" />
     <Compile Include="Gameplay\LevelTile.cs" />
     <Compile Include="Gameplay\Orientation.cs" />
     <Compile Include="Gameplay\Player.cs" />
@@ -75,10 +77,18 @@
     <None Include="Content\Levels\0.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Sprites\Diamond.png" />
+    <Content Include="Content\Sprites\LevelUI.png" />
     <Content Include="Content\Sprites\MarsTiles.png" />
     <Content Include="Content\Sprites\Robot.png" />
     <Content Include="Content\Sprites\SignalTower.png" />
     <Content Include="Icon.ico" />
+    <None Include="Content\Sprites\Diamond.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\LevelUI.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Sprites\Robot.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

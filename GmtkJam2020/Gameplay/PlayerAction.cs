@@ -5,6 +5,9 @@
         None,
         Push,
         Pull,
-        Grab
+        Grab,
+        Destroy,
+        Move,
+        Turn
     }
 }
