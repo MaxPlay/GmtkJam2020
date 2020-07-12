@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace GmtkJam2020.Rendering
     {
         public static Dictionary<string, Sprite> Sprites { get; } = new Dictionary<string, Sprite>();
 
+        public static Dictionary<string, SpriteFont> Fonts { get; } = new Dictionary<string, SpriteFont>();
+
         public static void LoadSprite(string name)
         {
             if (!Sprites.ContainsKey(name))
@@ -17,6 +20,16 @@ namespace GmtkJam2020.Rendering
                 Sprite sprite = Sprite.Load(name);
                 if (sprite != null)
                     Sprites.Add(name, sprite);
+            }
+        }
+
+        public static void LoadFont(string name)
+        {
+            if(!Fonts.ContainsKey(name))
+            {
+                SpriteFont font = GameCore.Instance.Content.Load<SpriteFont>("fonts/" + name);
+                if (font != null)
+                    Fonts.Add(name, font);
             }
         }
     }

@@ -61,6 +61,8 @@
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\SpriteInstance.cs" />
     <Compile Include="Rendering\SpriteManager.cs" />
+    <Compile Include="UI\ActionUI.cs" />
+    <Compile Include="UI\LevelUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -74,11 +76,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\fonts\Font.spritefont" />
+    <None Include="Content\fonts\Pixeled.ttf" />
     <None Include="Content\Levels\0.lvl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Content\Sprites\Diamond.png" />
-    <Content Include="Content\Sprites\LevelUI.png" />
+    <Content Include="Content\Sprites\LevelUI_Background.png" />
+    <Content Include="Content\Sprites\LevelUI_Icons.png" />
     <Content Include="Content\Sprites\MarsTiles.png" />
     <Content Include="Content\Sprites\Robot.png" />
     <Content Include="Content\Sprites\SignalTower.png" />
@@ -86,7 +91,10 @@
     <None Include="Content\Sprites\Diamond.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Sprites\LevelUI.json">
+    <None Include="Content\Sprites\LevelUI_Background.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Sprites\LevelUI_Icons.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Sprites\Robot.json">

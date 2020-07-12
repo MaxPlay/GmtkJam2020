@@ -195,14 +195,14 @@ namespace GmtkJam2020.Gameplay
         private void FloodFill(Point position, int value)
         {
             List<Point> points = new List<Point>(8) {
-                position + new Point(-1, -1),
+               // position + new Point(-1, -1),
                 position + new Point(0, -1),
-                position + new Point(1, -1),
+               // position + new Point(1, -1),
                 position + new Point(-1, 0),
                 position + new Point(1, 0),
-                position + new Point(-1, 1),
+               // position + new Point(-1, 1),
                 position + new Point(0, 1),
-                position + new Point(1, 1)
+               // position + new Point(1, 1)
             };
 
             for (int i = 0; i < points.Count; i++)

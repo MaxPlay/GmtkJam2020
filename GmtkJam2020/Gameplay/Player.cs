@@ -10,15 +10,15 @@ namespace GmtkJam2020.Gameplay
 {
     public class Player : LevelEntity
     {
-        Dictionary<PlayerAction, bool> actionAvailability = new Dictionary<PlayerAction, bool>()
+        Dictionary<PlayerAction, int> actionAvailability = new Dictionary<PlayerAction, int>()
         {
-            [PlayerAction.Destroy] = false,
-            [PlayerAction.Grab] = false,
-            [PlayerAction.Move] = false,
-            [PlayerAction.None] = false,
-            [PlayerAction.Pull] = false,
-            [PlayerAction.Push] = false,
-            [PlayerAction.Turn] = false
+            [PlayerAction.Destroy] = 0,
+            [PlayerAction.Grab] = 0,
+            [PlayerAction.Move] = 0,
+            [PlayerAction.None] = 0,
+            [PlayerAction.Pull] = 0,
+            [PlayerAction.Push] = 0,
+            [PlayerAction.Turn] = 0
         };
 
         public Player(int x, int y) : base(x, y)
@@ -34,15 +34,17 @@ namespace GmtkJam2020.Gameplay
         public void UpdateActionAvailability()
         {
             int distance = Level.GetTile(Position).Distance;
-            actionAvailability[PlayerAction.Destroy] = Level.Tower.DestroyDistance > distance;
-            actionAvailability[PlayerAction.Grab] = Level.Tower.GrabDistance > distance;
-            actionAvailability[PlayerAction.Move] = Level.Tower.MoveDistance > distance;
-            actionAvailability[PlayerAction.Pull] = Level.Tower.PullDistance > distance;
-            actionAvailability[PlayerAction.Push] = Level.Tower.PushDistance > distance;
-            actionAvailability[PlayerAction.Turn] = Level.Tower.TurnDistance > distance;
+            actionAvailability[PlayerAction.Destroy] = distance == -1 ? -1 : Level.Tower.DestroyDistance - distance;
+            actionAvailability[PlayerAction.Grab] = distance == -1 ? -1 : Level.Tower.GrabDistance - distance;
+            actionAvailability[PlayerAction.Move] = distance == -1 ? -1 : Level.Tower.MoveDistance - distance;
+            actionAvailability[PlayerAction.Pull] = distance == -1 ? -1 : Level.Tower.PullDistance - distance;
+            actionAvailability[PlayerAction.Push] = distance == -1 ? -1 : Level.Tower.PushDistance - distance;
+            actionAvailability[PlayerAction.Turn] = distance == -1 ? -1 : Level.Tower.TurnDistance - distance;
         }
 
-        public bool IsActionAvailable(PlayerAction action) => actionAvailability[action];
+        public bool IsActionAvailable(PlayerAction action) => actionAvailability[action] > 0;
+
+        public int ActionDistance(PlayerAction action) => actionAvailability[action];
 
         public void TurnClockwise()
         {
@@ -280,6 +282,7 @@ namespace GmtkJam2020.Gameplay
             Point targetPosition = GetPositionInFront();
 
             Level.DestroyTile(targetPosition);
+            UpdateActionAvailability();
         }
 
         private void UpdateAnimation()

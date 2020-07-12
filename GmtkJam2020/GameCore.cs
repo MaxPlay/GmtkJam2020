@@ -1,5 +1,6 @@
 ﻿using GmtkJam2020.Gameplay;
 using GmtkJam2020.Rendering;
+using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +27,8 @@ namespace GmtkJam2020
 
         private PlayerController Controller;
 
+        private LevelUI levelUI;
+
         public GameCore()
         {
             Instance = this;
@@ -46,8 +49,12 @@ namespace GmtkJam2020
             SpriteManager.LoadSprite("Robot");
             SpriteManager.LoadSprite("SignalTower");
             SpriteManager.LoadSprite("Diamond");
-            SpriteManager.LoadSprite("LevelUI");
+            SpriteManager.LoadSprite("LevelUI_Background");
+            SpriteManager.LoadSprite("LevelUI_Icons");
 
+            SpriteManager.LoadFont("Font");
+
+            levelUI = new LevelUI();
             renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
@@ -64,6 +71,7 @@ namespace GmtkJam2020
         protected override void Update(GameTime gameTime)
         {
             Controller.Update();
+            levelUI.Update(level.Player);
             base.Update(gameTime);
         }
 
@@ -74,6 +82,7 @@ namespace GmtkJam2020
             GraphicsDevice.Clear(Color.Black);
             SpriteBatch.Begin();
             level.Draw();
+            levelUI.Draw();
             SpriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
