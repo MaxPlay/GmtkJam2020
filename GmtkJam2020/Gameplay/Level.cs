@@ -277,6 +277,7 @@ namespace GmtkJam2020.Gameplay
                     Diamonds.RemoveAt(i);
                     data[position.X, position.Y].Type = TileType.Floor;
                     collected = true;
+                    SoundManager.PlaySound("Diamond");
                     break;
                 }
             }

@@ -22,12 +22,13 @@ namespace GmtkJam2020.Sounds
 
         static string currentSong;
 
-        static string[] soundFiles = new string[4]
+        static string[] soundFiles = new string[5]
         {
             "Step",
             "Drill",
             "StartGrapple",
-            "EndGrapple"
+            "EndGrapple",
+            "Diamond"
         };
 
         static string[] musicFiles = new string[2]

@@ -45,6 +45,18 @@
 /processorParam:Quality=Best
 /build:Music/TitleScreen_Loop.mp3
 
+#begin Music/TitleScreen_Loop_new.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/TitleScreen_Loop_new.ogg
+
+#begin Sfx/Diamond.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sfx/Diamond.wav
+
 #begin Sfx/Drill.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
