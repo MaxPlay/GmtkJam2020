@@ -141,7 +141,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/SignalTower.png
 
-#begin Sprites/TitleScreens.png
+#begin Sprites/TitleScreen.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -151,5 +151,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/TitleScreens.png
+/build:Sprites/TitleScreen.png
 

@@ -1,0 +1,18 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 0
+    },
+    "FrameSize": {
+      "X": 320,
+      "Y": 180
+    }
+  },
+  "Frames": [
+    {
+      "Name": "Default",
+      "Frame": 0
+    }
+  ]
+}

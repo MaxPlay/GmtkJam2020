@@ -38,10 +38,11 @@ namespace GmtkJam2020.Scenes
 
         public override void Start()
         {
-            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(80, 0, 160, 30), Execute = StartGame };
-            NextLevelButton = new Button() { Text = "Next Level", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = NextLevel };
-            PreviousLevelButton = new Button() { Text = "Previous Level", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = PreviousLevel };
-            BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(80, 120, 160, 30), Execute = Back };
+            SelectedIndex = 1;
+            PreviousLevelButton = new Button() { Text = "Previous Level", Index = 0, Bounds = new Rectangle(80, 20, 160, 30), Execute = PreviousLevel };
+            StartButton = new Button() { Text = "Start", Index = 1, Bounds = new Rectangle(80, 60, 160, 30), Execute = StartGame };
+            NextLevelButton = new Button() { Text = "Next Level", Index = 2, Bounds = new Rectangle(80, 100, 160, 30), Execute = NextLevel };
+            BackButton = new Button() { Text = "Back", Index = 3, Bounds = new Rectangle(80, 140, 160, 30), Execute = Back };
             buttons = new List<Button>
             {
                 StartButton,
