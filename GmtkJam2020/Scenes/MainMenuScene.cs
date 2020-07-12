@@ -36,9 +36,9 @@ namespace GmtkJam2020.Scenes
         public override void Start()
         {
             Sprite = SpriteManager.Sprites["TitleScreen"].CreateInstance();
-            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(80, 0, 160, 30), Execute = StartGame };
-            LevelSelectButton = new Button() { Text = "Level Select", Index = 1, Bounds = new Rectangle(80, 40, 160, 30), Execute = LevelSelect };
-            QuitButton = new Button() { Text = "Quit", Index = 2, Bounds = new Rectangle(80, 80, 160, 30), Execute = GameCore.Instance.Exit };
+            StartButton = new Button() { Text = "Start", Index = 0, Bounds = new Rectangle(170, 80, 140, 25), Execute = StartGame };
+            LevelSelectButton = new Button() { Text = "Level Select", Index = 1, Bounds = new Rectangle(170, 115, 140, 25), Execute = LevelSelect };
+            QuitButton = new Button() { Text = "Quit", Index = 2, Bounds = new Rectangle(170, 150, 140, 25), Execute = GameCore.Instance.Exit };
             buttons = new List<Button>
             {
                 StartButton,
