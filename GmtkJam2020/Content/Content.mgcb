@@ -13,6 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fonts/Pixeled.ttf
+/importer:
+/processor:
+/build:fonts/Pixeled.ttf
+
 #begin Music/LevelMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
@@ -55,6 +60,11 @@
 /processorParam:Quality=Best
 /build:Sfx/Step.wav
 
+#begin Sprites/Diamond.json
+/importer:
+/processor:
+/build:Sprites/Diamond.json
+
 #begin Sprites/Diamond.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -67,7 +77,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Diamond.png
 
-#begin Sprites/LevelUI.png
+#begin Sprites/Diamond.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -77,7 +87,46 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/LevelUI.png
+/build:Sprites/Diamond.png
+
+#begin Sprites/LevelUI_Background.json
+/importer:
+/processor:
+/build:Sprites/LevelUI_Background.json
+
+#begin Sprites/LevelUI_Background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/LevelUI_Background.png
+
+#begin Sprites/LevelUI_Icons.json
+/importer:
+/processor:
+/build:Sprites/LevelUI_Icons.json
+
+#begin Sprites/LevelUI_Icons.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/LevelUI_Icons.png
+
+#begin Sprites/MarsTiles.json
+/importer:
+/processor:
+/build:Sprites/MarsTiles.json
 
 #begin Sprites/MarsTiles.png
 /importer:TextureImporter
@@ -91,6 +140,23 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/MarsTiles.png
 
+#begin Sprites/MarsTiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/MarsTiles.png
+
+#begin Sprites/Robot.json
+/importer:
+/processor:
+/build:Sprites/Robot.json
+
 #begin Sprites/Robot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -102,6 +168,35 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Robot.png
+
+#begin Sprites/Robot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Robot.png
+
+#begin Sprites/SignalTower.json
+/importer:
+/processor:
+/build:Sprites/SignalTower.json
+
+#begin Sprites/SignalTower.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/SignalTower.png
 
 #begin Sprites/SignalTower.png
 /importer:TextureImporter
