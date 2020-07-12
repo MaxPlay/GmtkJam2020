@@ -18,6 +18,8 @@ Can you collect all the gems on this planet?
 
 ## Installation
 
+[Get the version 1.0 here](https://github.com/MaxPlay/GmtkJam2020/releases/tag/1.0)
+
 Extract the \*.zip file and run the executable. The game only runs on Windows and was only tested on Windows 10.
 
 ## Controls
