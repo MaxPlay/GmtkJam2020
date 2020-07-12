@@ -6,6 +6,8 @@
 
         public int Frame;
 
+        public int Distance;
+
         public static LevelTile OutOfBoundsTile => new LevelTile() { Type = TileType.Wall };
     }
 }

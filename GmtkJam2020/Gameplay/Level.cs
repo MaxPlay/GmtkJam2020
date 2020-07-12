@@ -86,6 +86,7 @@ namespace GmtkJam2020.Gameplay
                     }
                 }
             }
+            UpdateDistances();
         }
 
         public static Level LoadFromFile(string filename)
@@ -126,6 +127,20 @@ namespace GmtkJam2020.Gameplay
                         level.data[x, y] = new LevelTile() { Type = TileType.Floor, Frame = GameCore.Instance.Random.Next(0, floortiles.Length) };
                 }
             }
+
+            if (level.Tower != null)
+                for (int i = 2 + height; i < lines.Length; i++)
+                {
+                    if (lines[i].Length > 1)
+                    {
+                        char type = char.ToLowerInvariant(lines[i][0]);
+                        int.TryParse(lines[i].Substring(1), out int value);
+                        level.Tower.SetDistance(type, value);
+                    }
+                }
+
+            level.UpdateDistances();
+            level.Player?.UpdateActionAvailability();
             return level;
         }
 
@@ -146,7 +161,50 @@ namespace GmtkJam2020.Gameplay
 
             data[start.X, start.Y].Type = TileType.Floor;
             data[end.X, end.Y].Type = TileType.Movable;
+            UpdateDistances();
             return true;
+        }
+
+        public void UpdateDistances()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    data[x, y].Distance = -1;
+                }
+            }
+
+            if (Tower == null)
+                return;
+
+            data[Tower.Position.X, Tower.Position.Y].Distance = 0;
+
+            FloodFill(Tower.Position, 1);
+        }
+
+        private void FloodFill(Point position, int value)
+        {
+            List<Point> points = new List<Point>(8) {
+                position + new Point(-1, -1),
+                position + new Point(0, -1),
+                position + new Point(1, -1),
+                position + new Point(-1, 0),
+                position + new Point(1, 0),
+                position + new Point(-1, 1),
+                position + new Point(0, 1),
+                position + new Point(1, 1)
+            };
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                Point pos = points[i];
+                if (Bounds.Contains(pos) && IsWalkable(data[pos.X, pos.Y].Type) && (data[pos.X, pos.Y].Distance == -1 || data[pos.X, pos.Y].Distance > value))
+                {
+                    data[pos.X, pos.Y].Distance = value;
+                    FloodFill(pos, value + 1);
+                }
+            }
         }
 
         public bool PushTile(Point position, Orientation direction)
@@ -179,6 +237,7 @@ namespace GmtkJam2020.Gameplay
                 data[position.X, position.Y].Type = TileType.Floor;
                 data[newPosition.X, newPosition.Y].Type = TileType.Movable;
 
+                UpdateDistances();
                 return true;
             }
 
@@ -204,6 +263,8 @@ namespace GmtkJam2020.Gameplay
             LevelTile tile = GetTile(targetPosition);
             if (tile.Type == TileType.Destructible)
                 data[targetPosition.X, targetPosition.Y].Type = TileType.Floor;
+
+            UpdateDistances();
         }
 
         public void Draw()
@@ -227,6 +288,9 @@ namespace GmtkJam2020.Gameplay
                             sprite.DrawFrame(new Vector2(x, y) * TileSize.ToVector2(), "BreakableWall");
                             break;
                     }
+
+                    if (data[x, y].Distance != -1)
+                        GameCore.Instance.SpriteBatch.Draw(GameCore.Instance.Pixel, new Rectangle(x * DEFAULT_TILE_WIDTH, y * DEFAULT_TILE_HEIGHT, DEFAULT_TILE_WIDTH, DEFAULT_TILE_HEIGHT), new Color(Color.Green, data[x, y].Distance / 20.0f));
                 }
             }
 
