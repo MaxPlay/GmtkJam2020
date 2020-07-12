@@ -1,5 +1,6 @@
 ﻿using GmtkJam2020.Gameplay;
 using GmtkJam2020.Rendering;
+using GmtkJam2020.Scenes;
 using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -21,16 +22,12 @@ namespace GmtkJam2020
 
         public Random Random { get; private set; }
 
+        public SceneManager SceneManager { get; set; }
+
         public bool DebugEnabled { get; set; }
 
         RenderTarget2D renderTarget;
-
-        private Level level;
-
-        private PlayerController Controller;
-
-        private LevelUI levelUI;
-
+        
         public GameCore()
         {
             Instance = this;
@@ -38,6 +35,7 @@ namespace GmtkJam2020
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            SceneManager = new SceneManager();
         }
 
         protected override void Initialize()
@@ -56,13 +54,17 @@ namespace GmtkJam2020
 
             SpriteManager.LoadFont("Font");
 
-            levelUI = new LevelUI();
             renderTarget = new RenderTarget2D(GraphicsDevice, 320, 180);
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
-            level = Level.LoadFromFile("Content/Levels/0.lvl");
-            Controller = new PlayerController() { Player = level.Player, DeadZone = 0.3f };
+
+            new SplashScreen();
+            new MainMenuScene();
+            new GameScene();
+
+            SceneManager.GetScene<GameScene>().CurrentLevel = "0";
+            SceneManager.SetScene<GameScene>();
         }
 
         protected override void UnloadContent()
@@ -76,9 +78,7 @@ namespace GmtkJam2020
                 KeyboardState keyboardState = Keyboard.GetState();
                 DebugEnabled = keyboardState.IsKeyDown(Keys.F3);
             }
-
-            Controller.Update();
-            levelUI.Update(level.Player);
+            SceneManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
         }
 
@@ -88,8 +88,7 @@ namespace GmtkJam2020
 
             GraphicsDevice.Clear(Color.Black);
             SpriteBatch.Begin();
-            level.Draw();
-            levelUI.Draw();
+            SceneManager.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
             SpriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace GmtkJam2020.Gameplay
 {
-    public class PlayerController
+    public class PlayerController : Controller
     {
-        GamePadState gamePadState;
-        KeyboardState keyboardState;
-
-        public float DeadZone { get; set; }
-
         public Player Player { get; set; }
 
         readonly Dictionary<PlayerCommand, CommandDelegate> commands;
@@ -23,95 +18,41 @@ namespace GmtkJam2020.Gameplay
         {
             commands = new Dictionary<PlayerCommand, CommandDelegate>()
             {
-                [PlayerCommand.MoveDown] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Down, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.S, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadDown, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Down, ref gamePadState, ref lastGamePadState, DeadZone),
-                [PlayerCommand.MoveUp] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Up, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.W, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadUp, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Up, ref gamePadState, ref lastGamePadState, DeadZone),
-                [PlayerCommand.MoveLeft] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Right, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.D, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadRight, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Right, ref gamePadState, ref lastGamePadState, DeadZone),
-                [PlayerCommand.MoveRight] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => IsKeyPressed(Keys.Left, ref keyboardState, ref lastKeyboardState) || IsKeyPressed(Keys.A, ref keyboardState, ref lastKeyboardState) || IsButtonPressed(Buttons.DPadLeft, ref gamePadState, ref lastGamePadState) || IsDirection(Axis.Left, Direction.Left, ref gamePadState, ref lastGamePadState, DeadZone),
-                [PlayerCommand.Push] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D1) || gamePadState.IsButtonDown(Buttons.A),
-                [PlayerCommand.Pull] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D2) || gamePadState.IsButtonDown(Buttons.B),
-                [PlayerCommand.Grab] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D3) || gamePadState.IsButtonDown(Buttons.X),
-                [PlayerCommand.Destroy] = (ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState) => keyboardState.IsKeyDown(Keys.D4) || gamePadState.IsButtonDown(Buttons.Y),
+                [PlayerCommand.MoveDown] = () => IsKeyPressed(Keys.Down) || IsKeyPressed(Keys.S) || IsButtonPressed(Buttons.DPadDown) || IsDirection(Axis.Left, Direction.Down),
+                [PlayerCommand.MoveUp] = () => IsKeyPressed(Keys.Up) || IsKeyPressed(Keys.W) || IsButtonPressed(Buttons.DPadUp) || IsDirection(Axis.Left, Direction.Up),
+                [PlayerCommand.MoveLeft] = () => IsKeyPressed(Keys.Right) || IsKeyPressed(Keys.D) || IsButtonPressed(Buttons.DPadRight) || IsDirection(Axis.Left, Direction.Right),
+                [PlayerCommand.MoveRight] = () => IsKeyPressed(Keys.Left) || IsKeyPressed(Keys.A) || IsButtonPressed(Buttons.DPadLeft) || IsDirection(Axis.Left, Direction.Left),
+                [PlayerCommand.Push] = () => keyboardState.IsKeyDown(Keys.D1) || gamePadState.IsButtonDown(Buttons.A),
+                [PlayerCommand.Pull] = () => keyboardState.IsKeyDown(Keys.D2) || gamePadState.IsButtonDown(Buttons.B),
+                [PlayerCommand.Grab] = () => keyboardState.IsKeyDown(Keys.D3) || gamePadState.IsButtonDown(Buttons.X),
+                [PlayerCommand.Destroy] = () => keyboardState.IsKeyDown(Keys.D4) || gamePadState.IsButtonDown(Buttons.Y),
             };
         }
 
-        public void Update()
+        public override void Update()
         {
-            GamePadState lastGamePadState = gamePadState;
-            KeyboardState lastKeyboardState = keyboardState;
+            base.Update();
 
-            gamePadState = GamePad.GetState(PlayerIndex.One);
-            keyboardState = Keyboard.GetState();
-
-            if (commands[PlayerCommand.MoveUp](ref lastKeyboardState, ref lastGamePadState))
+            if (commands[PlayerCommand.MoveUp]())
                 Player?.MoveForward();
-            else if (commands[PlayerCommand.MoveDown](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveDown]())
                 Player?.MoveBackward();
-            else if (commands[PlayerCommand.MoveRight](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveRight]())
                 Player?.TurnCounterClockwise();
-            else if (commands[PlayerCommand.MoveLeft](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.MoveLeft]())
                 Player?.TurnClockwise();
 
-            if (commands[PlayerCommand.Push](ref lastKeyboardState, ref lastGamePadState))
+            if (commands[PlayerCommand.Push]())
                 Player.CurrentAction = PlayerAction.Push;
-            else if (commands[PlayerCommand.Pull](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.Pull]())
                 Player.CurrentAction = PlayerAction.Pull;
-            else if (commands[PlayerCommand.Grab](ref lastKeyboardState, ref lastGamePadState))
+            else if (commands[PlayerCommand.Grab]())
                 Player.CurrentAction = PlayerAction.Grab;
             else
                 Player.CurrentAction = PlayerAction.None;
 
-            if (commands[PlayerCommand.Destroy](ref lastKeyboardState, ref lastGamePadState))
+            if (commands[PlayerCommand.Destroy]())
                 Player.Destroy();
-        }
-
-        public static bool IsKeyPressed(Keys key, ref KeyboardState keyboardState, ref KeyboardState lastKeyboardState) => lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key);
-
-        public static bool IsButtonPressed(Buttons button, ref GamePadState gamePadState, ref GamePadState lastGamePadState) => lastGamePadState.IsButtonUp(button) && gamePadState.IsButtonDown(button);
-
-        public static bool IsDirection(Axis axis, Direction direction, ref GamePadState gamePadState, ref GamePadState lastGamePadState, float deadZone)
-        {
-            if (!gamePadState.IsConnected)
-                return false;
-
-            Vector2 axisValue = (axis == Axis.Left) ? gamePadState.ThumbSticks.Left : gamePadState.ThumbSticks.Right;
-            Vector2 lastAxisValue = (axis == Axis.Left) ? lastGamePadState.ThumbSticks.Left : lastGamePadState.ThumbSticks.Right;
-            float triggerValue = (axis == Axis.Left) ? gamePadState.Triggers.Left : gamePadState.Triggers.Right;
-            float lastTriggerValue = (axis == Axis.Left) ? lastGamePadState.Triggers.Left : lastGamePadState.Triggers.Right;
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    return axisValue.Y > deadZone && lastAxisValue.Y < deadZone && Math.Abs(axisValue.Y) > Math.Abs(axisValue.X);
-
-                case Direction.Left:
-                    return axisValue.X < -deadZone && lastAxisValue.X > -deadZone && Math.Abs(axisValue.X) > Math.Abs(axisValue.Y);
-
-                case Direction.Down:
-                    return axisValue.Y < -deadZone && lastAxisValue.Y > -deadZone && Math.Abs(axisValue.Y) > Math.Abs(axisValue.X);
-
-                case Direction.Right:
-                    return axisValue.X > deadZone && lastAxisValue.X < deadZone && Math.Abs(axisValue.X) > Math.Abs(axisValue.Y);
-
-                case Direction.Trigger:
-                    return triggerValue > deadZone && lastTriggerValue < deadZone;
-            }
-
-            return false;
-        }
-
-        public enum Direction
-        {
-            Up,
-            Left,
-            Down,
-            Right,
-            Trigger
-        }
-
-        public enum Axis
-        {
-            Left,
-            Right
         }
 
         private enum PlayerCommand
@@ -126,6 +67,6 @@ namespace GmtkJam2020.Gameplay
             Destroy
         }
 
-        private delegate bool CommandDelegate(ref KeyboardState lastKeyboardState, ref GamePadState lastGamePadState);
+        private delegate bool CommandDelegate();
     }
 }

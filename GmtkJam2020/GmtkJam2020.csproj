@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameCore.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Gameplay\Diamond.cs" />
     <Compile Include="Gameplay\Level.cs" />
     <Compile Include="Gameplay\LevelEntity.cs" />
@@ -61,8 +62,16 @@
     <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\SpriteInstance.cs" />
     <Compile Include="Rendering\SpriteManager.cs" />
+    <Compile Include="Scenes\GameScene.cs" />
+    <Compile Include="Scenes\MainMenuScene.cs" />
+    <Compile Include="Scenes\MenuController.cs" />
+    <Compile Include="Scenes\Scene.cs" />
+    <Compile Include="Scenes\SceneManager.cs" />
+    <Compile Include="Scenes\SplashScreen.cs" />
     <Compile Include="UI\ActionUI.cs" />
+    <Compile Include="UI\Button.cs" />
     <Compile Include="UI\LevelUI.cs" />
+    <Compile Include="UI\PauseMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

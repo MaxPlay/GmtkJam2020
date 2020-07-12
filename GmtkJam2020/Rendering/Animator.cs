@@ -14,7 +14,7 @@ namespace GmtkJam2020.Rendering
 
         private float frameTimer;
 
-        public void Update(float deltaSeconds)
+        public void Update(float deltaTime)
         {
             if (frameTimer <= 0.0f)
             {
@@ -25,7 +25,7 @@ namespace GmtkJam2020.Rendering
                 }
             }
 
-            frameTimer += deltaSeconds;
+            frameTimer += deltaTime;
         }
 
         public void SetAnimation(Animation animation)

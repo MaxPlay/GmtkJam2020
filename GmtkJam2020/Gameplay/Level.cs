@@ -298,7 +298,12 @@ namespace GmtkJam2020.Gameplay
             UpdateDistances();
         }
 
-        public void Draw()
+        public void Update(float deltaTime)
+        {
+
+        }
+
+        public void Draw(float deltaTime)
         {
             for (int y = 0; y < Height; y++)
             {
