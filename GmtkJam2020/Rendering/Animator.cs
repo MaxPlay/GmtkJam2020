@@ -16,16 +16,20 @@ namespace GmtkJam2020.Rendering
 
         public void Update(float deltaTime)
         {
+            if (Animation == null || Animation.Frames == null)
+                return;
+
             if (frameTimer <= 0.0f)
             {
                 Frame++;
-                if (Animation.Frames.Count >= Frame)
+                if (Animation.Frames.Count <= Frame)
                 {
                     Frame = 0;
                 }
+                frameTimer = FrameDuration;
             }
 
-            frameTimer += deltaTime;
+            frameTimer -= deltaTime;
         }
 
         public void SetAnimation(Animation animation)

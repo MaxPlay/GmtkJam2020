@@ -331,7 +331,9 @@ namespace GmtkJam2020.Gameplay
 
         public void Update(float deltaTime)
         {
-
+            Player.Update(deltaTime);
+            Diamonds.ForEach(d => d?.Update(deltaTime));
+            Tower?.Update(deltaTime);
         }
 
         public void Draw(float deltaTime)
