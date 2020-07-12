@@ -1,5 +1,6 @@
 ﻿using GmtkJam2020.Rendering;
 using GmtkJam2020.Scenes;
+using GmtkJam2020.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -180,6 +181,7 @@ namespace GmtkJam2020.Gameplay
 
             data[end.X, end.Y].Type = data[start.X, start.Y].Type;
             data[start.X, start.Y].Type = TileType.Floor;
+            SoundManager.PlaySound("StartGrapple");
             UpdateDistances();
             return true;
         }
@@ -257,6 +259,7 @@ namespace GmtkJam2020.Gameplay
                 data[position.X, position.Y].Type = TileType.Floor;
 
                 UpdateDistances();
+                SoundManager.PlaySound("StartGrapple");
                 return true;
             }
 
@@ -317,7 +320,10 @@ namespace GmtkJam2020.Gameplay
         {
             LevelTile tile = GetTile(targetPosition);
             if (IsDestructible(tile.Type))
+            {
+                SoundManager.PlaySound("Drill");
                 data[targetPosition.X, targetPosition.Y].Type = TileType.Floor;
+            }
 
             UpdateDistances();
         }

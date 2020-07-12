@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GmtkJam2020.Sounds;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,14 @@ namespace GmtkJam2020.Scenes
 
         public void SetScene<T>() where T : Scene
         {
+            if(typeof(T) == typeof(GameScene))
+            {
+                SoundManager.PlayMusic("LevelMusic");
+            }
+            else
+            {
+                SoundManager.PlayMusic("TitleScreen_Loop");
+            }
             if (NamedScenes.ContainsKey(typeof(T)))
             {
                 CurrentScene?.Stop();

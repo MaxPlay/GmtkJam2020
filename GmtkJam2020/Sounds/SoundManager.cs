@@ -20,6 +20,8 @@ namespace GmtkJam2020.Sounds
 
         static float volume = 1;
 
+        static string currentSong;
+
         static string[] soundFiles = new string[4]
         {
             "Step",
@@ -72,11 +74,15 @@ namespace GmtkJam2020.Sounds
         public static void PlayMusic(string name)
         {
             CheckLists();
-            if (MediaPlayer.State == MediaState.Playing)
-                MediaPlayer.Stop();
-            if (possibleSongs.Any(s => s.Name == name))
+            if(currentSong != name)
             {
-                MediaPlayer.Play(possibleSongs.Find(s => s.Name == name).Song);
+                if (MediaPlayer.State == MediaState.Playing)
+                    MediaPlayer.Stop();
+                if (possibleSongs.Any(s => s.Name == name))
+                {
+                    MediaPlayer.Play(possibleSongs.Find(s => s.Name == name).Song);
+                }
+                currentSong = name;
             }
         }
 
@@ -92,7 +98,7 @@ namespace GmtkJam2020.Sounds
             }
         }
 
-        public static void PlaySound(string soundName, bool loop)
+        public static void PlaySound(string soundName, bool loop = false)
         {
             CheckLists();
             if (possibleSounds.Any(s => s.Name == soundName))
