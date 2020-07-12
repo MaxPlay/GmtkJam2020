@@ -1,0 +1,26 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 0
+    },
+    "FrameSize": {
+      "X": 16,
+      "Y": 16
+    }
+  },
+  "Animations": [
+    {
+      "Name": "Diamond_Rotate",
+      "Frames": [ 0, 1, 2 ],
+      "Effect": "None",
+      "Loops": true
+    }
+  ],
+  "Frames": [
+    {
+      "Name": "HoldDiamond",
+      "Frame": 0
+    }
+  ]
+}

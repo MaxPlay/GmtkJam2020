@@ -1,0 +1,44 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 0
+    },
+    "FrameSize": {
+      "X": 20,
+      "Y": 20
+    }
+  },
+  "Animations": [
+  ],
+  "Frames": [
+    {
+      "Name": "Frame_Active",
+      "Frame": 0
+    },
+    {
+      "Name": "Frame_Disabled",
+      "Frame": 1
+    },
+    {
+      "Name": "Icon_Drill",
+      "Frame": 2
+    },
+    {
+      "Name": "Icon_Grapple",
+      "Frame": 3
+    },
+    {
+      "Name": "Icon_Pull",
+      "Frame": 4
+    },
+    {
+      "Name": "Icon_Push",
+      "Frame": 5
+    },
+    {
+      "Name": "Icon_Turn",
+      "Frame": 6
+    }
+  ]
+}
