@@ -16,6 +16,8 @@ namespace GmtkJam2020.Scenes
 
         public SpriteInstance Sprite { get; private set; }
 
+        public TextBlock TextBlock { get; set; }
+
         public Button MenuButton { get; set; }
 
         public int SelectedIndex { get; set; }
@@ -26,12 +28,14 @@ namespace GmtkJam2020.Scenes
         {
             Sprite.DrawFrame(new Vector2(), "Default");
             MenuButton.Draw(SelectedIndex);
+            TextBlock.Draw();
         }
 
         public override void Start()
         {
             Sprite = SpriteManager.Sprites["TitleScreen"].CreateInstance();
             MenuButton = new Button() { Text = "Main Menu", Index = 0, Bounds = new Rectangle(170, 150, 140, 25), Execute = BackToMain };
+            TextBlock = new TextBlock() { Bounds = new Rectangle(150, 80, 140, 40), Text = "Thank you for playing!" };
             MenuController = Manager.MenuController;
         }
 
