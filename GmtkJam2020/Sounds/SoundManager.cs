@@ -166,22 +166,16 @@ namespace GmtkJam2020.Sounds
 
         public struct SongData
         {
-            string name;
+            public string Name { get; set; }
 
-            Song song;
-
-            public string Name { get => name; set => name = value; }
-            public Song Song { get => song; set => song = value; }
+            public Song Song { get; set; }
         }
 
         public struct SoundData
         {
-            string name;
+            public string Name { get; set; }
 
-            SoundEffect soundEffect;
-
-            public string Name { get => name; set => name = value; }
-            public SoundEffect SoundEffect { get => soundEffect; set => soundEffect = value; }
+            public SoundEffect SoundEffect { get; set; }
         }
     }
 }
