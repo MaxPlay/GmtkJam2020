@@ -1,0 +1,24 @@
+{
+  "Image": {
+    "Pivot": {
+      "X": 0,
+      "Y": 0
+    },
+    "FrameSize": {
+      "X": 64,
+      "Y": 20
+    }
+  },
+  "Animations": [
+  ],
+  "Frames": [
+    {
+      "Name": "Frame_Active",
+      "Frame": 0
+    },
+    {
+      "Name": "Frame_Disabled",
+      "Frame": 1
+    }
+  ]
+}

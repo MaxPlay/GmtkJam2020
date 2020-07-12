@@ -13,32 +13,24 @@
   ],
   "Frames": [
     {
-      "Name": "Frame_Active",
+      "Name": "Icon_Drill",
       "Frame": 0
     },
     {
-      "Name": "Frame_Disabled",
+      "Name": "Icon_Grapple",
       "Frame": 1
     },
     {
-      "Name": "Icon_Drill",
+      "Name": "Icon_Pull",
       "Frame": 2
     },
     {
-      "Name": "Icon_Grapple",
+      "Name": "Icon_Push",
       "Frame": 3
     },
     {
-      "Name": "Icon_Pull",
-      "Frame": 4
-    },
-    {
-      "Name": "Icon_Push",
-      "Frame": 5
-    },
-    {
       "Name": "Icon_Turn",
-      "Frame": 6
+      "Frame": 4
     }
   ]
 }
