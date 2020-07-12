@@ -68,6 +68,8 @@
     <Compile Include="Scenes\Scene.cs" />
     <Compile Include="Scenes\SceneManager.cs" />
     <Compile Include="Scenes\SplashScreen.cs" />
+    <Compile Include="Sounds\SoundEmmitter.cs" />
+    <Compile Include="Sounds\SoundManager.cs" />
     <Compile Include="UI\ActionUI.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\LevelUI.cs" />

@@ -1,6 +1,7 @@
 ﻿using GmtkJam2020.Gameplay;
 using GmtkJam2020.Rendering;
 using GmtkJam2020.Scenes;
+using GmtkJam2020.Sounds;
 using GmtkJam2020.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -51,6 +52,9 @@ namespace GmtkJam2020
             SpriteManager.LoadSprite("Diamond");
             SpriteManager.LoadSprite("LevelUI_Background");
             SpriteManager.LoadSprite("LevelUI_Icons");
+
+            SoundManager.LoadFiles();
+            SoundManager.SetVolume(0.1f);
 
             SpriteManager.LoadFont("Font");
 
