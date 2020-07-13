@@ -7,7 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 
 namespace GmtkJam2020
 {
@@ -26,9 +28,10 @@ namespace GmtkJam2020
         public SceneManager SceneManager { get; set; }
 
         public bool DebugEnabled { get; set; }
+        public Configuration Configuration { get; private set; }
 
         RenderTarget2D renderTarget;
-        
+
         public GameCore()
         {
             Instance = this;
@@ -37,10 +40,29 @@ namespace GmtkJam2020
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             SceneManager = new SceneManager();
+            LoadScreenConfig();
+        }
+
+        private void LoadScreenConfig()
+        {
+            if (File.Exists("config.json"))
+            {
+                Configuration = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("config.json"));
+            }
+            else
+            {
+                Configuration = Configuration.CreateDefault();
+                File.WriteAllText("config.json", JsonConvert.SerializeObject(Configuration));
+            }
         }
 
         protected override void Initialize()
         {
+            Graphics.PreferredBackBufferWidth = Configuration.Width;
+            Graphics.PreferredBackBufferHeight = Configuration.Height;
+            Graphics.IsFullScreen = Configuration.Fullscreen;
+            IsMouseVisible = !Configuration.Fullscreen;
+            Graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -97,13 +119,13 @@ namespace GmtkJam2020
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
             SceneManager.Draw((float)gameTime.ElapsedGameTime.TotalSeconds);
             SpriteBatch.End();
-            
+
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.PointClamp);
-            SpriteBatch.Draw(renderTarget, new Rectangle(0, 0, GraphicsDeviceManager.DefaultBackBufferWidth, GraphicsDeviceManager.DefaultBackBufferHeight), Color.White);
+            SpriteBatch.Draw(renderTarget, new Rectangle(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight), Color.White);
             SpriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
     }
